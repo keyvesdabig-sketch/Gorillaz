@@ -6,6 +6,7 @@ import { createBanana, stepBanana } from './physics.js';
 import { checkOutOfBounds, checkTerrain, checkGorilla } from './collision.js';
 import { createExplosionParticles, stepParticles } from './particles.js';
 import { drawUI } from './ui.js';
+import { calculateAIShot } from './ai.js';
 
 const canvas = document.getElementById('game');
 const ctx    = canvas.getContext('2d');
@@ -22,7 +23,7 @@ window.addEventListener('keyup', e => { keys[e.code] = false; });
 const AIM_SPEED   = 60;
 const POWER_SPEED = 40;
 
-initGame(false); // false = P2 ist Mensch
+initGame(true);
 
 let lastTime = 0;
 
@@ -116,6 +117,21 @@ function processExploding(dt) {
   }
 }
 
+function processAI(dt) {
+  if (gs.phase !== STATE.AIMING) return;
+  const current = gs.players[gs.turn];
+  if (!current.isAI) return;
+
+  gs.aiThinkTimer -= dt;
+  if (gs.aiThinkTimer > 0) return;
+
+  const opponent = gs.players[1 - gs.turn];
+  const shot     = calculateAIShot(current, opponent, gs.wind);
+  gs.aim.angle   = shot.angle;
+  gs.aim.power   = shot.power;
+  fireShot();
+}
+
 function processNextTurn() {
   if (gs.phase !== STATE.NEXT_TURN) return;
   transition('NEXT_TURN_DONE');
@@ -152,6 +168,7 @@ function tick(timestamp) {
   }
 
   processAimingInput(dt);
+  processAI(dt);
   processFlight(dt);
   processExploding(dt);
   processNextTurn();
