@@ -8,6 +8,7 @@ export function render(ctx, gs) {
   drawTerrain(ctx);
   drawGorillas(ctx, gs);
   drawBanana(ctx, gs.banana);
+  drawParticles(ctx, gs.particles);
 }
 
 function drawSky(ctx) {
@@ -37,4 +38,13 @@ function drawBanana(ctx, banana) {
   ctx.fillStyle = COLORS.BANANA;
   ctx.fillRect(-4, -4, 8, 8);
   ctx.restore();
+}
+
+function drawParticles(ctx, particles) {
+  for (const p of particles) {
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle   = p.color;
+    ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+  }
+  ctx.globalAlpha = 1;
 }
