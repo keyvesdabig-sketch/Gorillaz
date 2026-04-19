@@ -7,6 +7,7 @@ export function render(ctx, gs) {
   drawSky(ctx);
   drawTerrain(ctx);
   drawGorillas(ctx, gs);
+  drawBanana(ctx, gs.banana);
 }
 
 function drawSky(ctx) {
@@ -26,4 +27,14 @@ function drawGorillas(ctx, gs) {
   const [p0, p1] = gs.players;
   drawGorilla(ctx, p0.x, p0.y, 'right', p0.animState);
   drawGorilla(ctx, p1.x, p1.y, 'left',  p1.animState);
+}
+
+function drawBanana(ctx, banana) {
+  if (!banana) return;
+  ctx.save();
+  ctx.translate(banana.x, banana.y);
+  ctx.rotate(banana.rotation);
+  ctx.fillStyle = COLORS.BANANA;
+  ctx.fillRect(-4, -4, 8, 8);
+  ctx.restore();
 }
