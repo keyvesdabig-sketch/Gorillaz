@@ -11,9 +11,49 @@ const ctx    = canvas.getContext('2d');
 canvas.width  = CANVAS_W;
 canvas.height = CANVAS_H;
 
+const keys = {};
+window.addEventListener('keydown', e => {
+  keys[e.code] = true;
+  e.preventDefault();
+});
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+const AIM_SPEED   = 60;
+const POWER_SPEED = 40;
+
 initGame(false); // false = P2 ist Mensch
 
 let lastTime = 0;
+
+function processAimingInput(dt) {
+  if (gs.phase !== STATE.AIMING) return;
+  if (gs.players[gs.turn].isAI) return;
+
+  if (keys['ArrowLeft'])  gs.aim.angle = Math.min(180, gs.aim.angle + AIM_SPEED * dt);
+  if (keys['ArrowRight']) gs.aim.angle = Math.max(0,   gs.aim.angle - AIM_SPEED * dt);
+  if (keys['ArrowUp'])    gs.aim.power = Math.min(100, gs.aim.power + POWER_SPEED * dt);
+  if (keys['ArrowDown'])  gs.aim.power = Math.max(5,   gs.aim.power - POWER_SPEED * dt);
+
+  if (keys['Space']) {
+    keys['Space'] = false;
+    fireShot();
+  }
+}
+
+function fireShot() {
+  const shooter = gs.players[gs.turn];
+  const facing  = gs.turn === 0 ? 1 : -1;
+  const angle   = gs.turn === 0 ? gs.aim.angle : 180 - gs.aim.angle;
+
+  gs.banana = createBanana(
+    shooter.x,
+    shooter.y - GORILLA_H * 0.6,
+    angle,
+    gs.aim.power,
+    gs.wind,
+  );
+  transition('SHOOT');
+}
 
 // directHitIdx: Index des Gorillas mit Direkttreffer (-1 = kein Direkttreffer)
 function triggerExplosion(cx, cy, directHitIdx = -1) {
@@ -110,6 +150,7 @@ function tick(timestamp) {
     transition('SETUP_DONE');
   }
 
+  processAimingInput(dt);
   processFlight(dt);
   processExploding(dt);
   processNextTurn();
