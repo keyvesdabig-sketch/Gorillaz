@@ -2,7 +2,8 @@ import { CANVAS_W, CANVAS_H, AI_THINK_DELAY, GORILLA_H } from './constants.js';
 import { gs, STATE, transition, initGame } from './state.js';
 import { generateTerrain, getHeight } from './terrain.js';
 import { render } from './renderer.js';
-import { createBanana } from './physics.js';
+import { createBanana, stepBanana } from './physics.js';
+import { checkOutOfBounds, checkTerrain, checkGorilla } from './collision.js';
 
 const canvas = document.getElementById('game');
 const ctx    = canvas.getContext('2d');
@@ -53,6 +54,31 @@ function fireShot() {
   transition('SHOOT');
 }
 
+function processFlight(dt) {
+  if (gs.phase !== STATE.FLYING || !gs.banana) return;
+
+  stepBanana(gs.banana, dt);
+
+  if (checkOutOfBounds(gs.banana)) {
+    transition('OUT_OF_BOUNDS');
+    return;
+  }
+  if (checkTerrain(gs.banana)) {
+    transition('HIT_TERRAIN');
+    return;
+  }
+  const hitIdx = checkGorilla(gs.banana, gs.players);
+  if (hitIdx !== -1) {
+    gs.players[hitIdx].hp = Math.max(0, gs.players[hitIdx].hp - 30);
+    transition('HIT_GORILLA');
+  }
+}
+
+function processNextTurn() {
+  if (gs.phase !== STATE.NEXT_TURN) return;
+  transition('NEXT_TURN_DONE');
+}
+
 function tick(timestamp) {
   const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
   lastTime = timestamp;
@@ -69,6 +95,8 @@ function tick(timestamp) {
   }
 
   processAimingInput(dt);
+  processFlight(dt);
+  processNextTurn();
   render(ctx, gs);
   requestAnimationFrame(tick);
 }
