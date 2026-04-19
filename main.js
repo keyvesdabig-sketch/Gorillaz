@@ -1,6 +1,6 @@
-import { CANVAS_W, CANVAS_H } from './constants.js';
+import { CANVAS_W, CANVAS_H, AI_THINK_DELAY } from './constants.js';
 import { gs, STATE, transition, initGame } from './state.js';
-import { generateTerrain } from './terrain.js';
+import { generateTerrain, getHeight } from './terrain.js';
 import { render } from './renderer.js';
 
 const canvas = document.getElementById('game');
@@ -18,6 +18,12 @@ function tick(timestamp) {
 
   if (gs.phase === STATE.SETUP) {
     generateTerrain();
+    // Gorillas auf dem Terrain platzieren
+    gs.players[0].x = 75;
+    gs.players[0].y = getHeight(75);
+    gs.players[1].x = CANVAS_W - 75;
+    gs.players[1].y = getHeight(CANVAS_W - 75);
+    gs.aiThinkTimer  = AI_THINK_DELAY;
     transition('SETUP_DONE');
   }
 
