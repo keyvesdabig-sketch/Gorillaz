@@ -12,7 +12,7 @@ npx serve .
 
 ## Architecture
 
-Rundenbasiertes Artillery-Game (HTML5 Canvas, Vanilla JS ES-Module, kein Build-Tool). Canvas 1280×720, Neon-Night-Farbpalette.
+Rundenbasiertes Artillery-Game (HTML5 Canvas, Vanilla JS ES-Module, kein Build-Tool). Interne Auflösung **640×360**, via CSS auf 1280×720 hochskaliert (`image-rendering: pixelated` — Retro-Pixel-Look, 4× weniger Pixel-Arbeit). Neon-Night-Farbpalette.
 
 **State Machine** (`state.js`) treibt die gesamte Logik über einen mutablen Singleton `gs`:
 
@@ -22,7 +22,9 @@ SETUP → AIMING → FLYING → EXPLODING → NEXT_TURN → GAME_OVER
 
 `main.js` betreibt den `requestAnimationFrame`-Loop: `update(dt)` → `render(ctx, gs)` → `drawUI(ctx, gs)`.
 
-**Terrain** (`terrain.js`) hält zwei parallele Datenstrukturen: `terrainH[x]` (1D Height-Array) und `terrainPx` (Uint8Array Pixel-Buffer). Beide müssen nach `carveExplosion()` konsistent sein. `buildTerrainImageData()` ist gecacht — wird nur bei Änderung neu gebaut.
+**Terrain** (`terrain.js`) hält zwei parallele Datenstrukturen: `terrainH[x]` (1D Height-Array, 640 Einträge) und `terrainPx` (Uint8Array Pixel-Buffer, 640×360). Beide müssen nach `carveExplosion()` konsistent sein. `buildTerrainImageData()` ist gecacht — wird nur bei Änderung neu gebaut.
+
+**Physics** (`physics.js`) verwendet Sub-Stepping: bei Geschwindigkeit > 200 px/s wird `stepBanana` in 4 Sub-Schritte aufgeteilt, um den Tunneling-Bug zu verhindern.
 
 **Module und ihre Verantwortlichkeit:**
 

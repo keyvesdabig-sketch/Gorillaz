@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(\"C:/Users/teech/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh\" --project-dir \"C:/Users/teech/Antigravity/Gorillaz\")"
+      "Bash(\"C:/Users/teech/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh\" --project-dir \"C:/Users/teech/Antigravity/Gorillaz\")",
+      "Bash(node \"C:/Users/teech/.claude/plugins/cache/openai-codex/codex/1.0.1/scripts/codex-companion.mjs\" adversarial-review \"\")"
     ]
   }
 }

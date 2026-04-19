@@ -15,7 +15,7 @@ Rundenbasiertes Artillery-Game im Stil des Klassikers "Gorillas". HTML5 Canvas, 
 | Parameter | Entscheidung |
 |---|---|
 | Tech | HTML5 Canvas + Vanilla JS ES-Module, kein Build-Tool |
-| Canvas | 1280 × 720 px |
+| Canvas | 640 × 360 px intern, via CSS auf 1280 × 720 skaliert (`image-rendering: pixelated`) |
 | Farbpalette | Neon Night (#1a1a2e Hintergrund, #e94560 Akzent, #53d8fb Terrain, #ffe135 Banane) |
 | Spielmodi | Hotseat (P1 vs P2) + KI-Gegner |
 | Terrain | Prozedural (Noise-basiert), Pixel-Buffer, zerstörbar |
@@ -84,10 +84,10 @@ function tick(timestamp) {
 **Generierung** (Sinus-Overlay, kein externes Noise-Library nötig):
 ```js
 for (let x = 0; x < CANVAS_W; x++) {
-  terrain[x] = BASE_HEIGHT
-    + Math.sin(x * 0.008) * 80
-    + Math.sin(x * 0.02 + 1.3) * 40
-    + Math.sin(x * 0.05 + 0.7) * 20;
+  terrain[x] = BASE_HEIGHT         // BASE_HEIGHT = 190 (640×360-Welt)
+    + Math.sin(x * 0.016) * 40
+    + Math.sin(x * 0.04 + 1.3) * 20
+    + Math.sin(x * 0.10 + 0.7) * 10;
 }
 ```
 
@@ -104,12 +104,24 @@ Explosions-Radius MVP: 40 px. Gorillas die danach über einem Loch schweben: `go
 
 ## Physics
 
-**Pro Frame (dt in Sekunden):**
+**Pro Frame (dt in Sekunden) mit Sub-Stepping:**
+
+Um den Tunneling-Bug (Banane springt bei hoher Geschwindigkeit durch dünne Wände) zu verhindern, wird der Frame-Schritt in mehrere Sub-Schritte unterteilt, wenn die Geschwindigkeit einen Schwellenwert überschreitet:
+
 ```js
-vx += wind * dt;
-vy += GRAVITY * dt;   // GRAVITY = 300 px/s²
-banana.x += vx * dt;
-banana.y += vy * dt;
+const SUBSTEP_THRESHOLD = 200; // px/s
+const speed = Math.sqrt(vx*vx + vy*vy);
+const steps = speed > SUBSTEP_THRESHOLD ? 4 : 1;
+const subDt = dt / steps;
+
+for (let i = 0; i < steps; i++) {
+  vx += wind * subDt;
+  vy += GRAVITY * subDt;
+  banana.x += vx * subDt;
+  banana.y += vy * subDt;
+  // Collision-Check nach jedem Sub-Schritt
+  if (hitDetected()) break;
+}
 ```
 
 **Startgeschwindigkeit:**
@@ -126,7 +138,7 @@ vy = -Math.sin(angleRad) * power;  // power: 0–100, skaliert auf px/s
 
 Reihenfolge pro Frame während FLYING:
 
-1. **Out of bounds:** `x < 0 || x > 1280 || y > 720` → `NEXT_TURN`
+1. **Out of bounds:** `x < 0 || x > 640 || y > 360` → `NEXT_TURN`
 2. **Terrain:** `terrainPixels[floor(banana.x)][floor(banana.y)]` → `EXPLODING`
 3. **Gorilla:** AABB-Check (64×80 px Bounding Box)
    - Direkttreffer: −30 HP
@@ -208,11 +220,13 @@ export const COLORS = {
 
 ---
 
-## Out of Scope (MVP)
+## Out of Scope (MVP) — Geplant für v2
 
+- **Gorilla Falling-State:** Physikalisches Fallen wenn Terrain unter Gorilla wegexplodiert (MVP: Snap auf `terrain[x]`)
+- **Audio (`audio.js`):** Web Audio API Synthesizer-Sounds — "Plopp" beim Schuss, Rauschen bei Explosion
+- **Touch-Steuerung:** On-Canvas-Buttons für Tablet/Smartphone
 - Bäume, Gebäude, Dekorationen
 - Screen Shake
 - Squash & Stretch Animationen
-- Sound-Effekte
 - Vordefinierte Level (Blueprint 2)
 - Netzwerk-Multiplayer

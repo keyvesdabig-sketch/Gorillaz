@@ -56,8 +56,8 @@
 - [ ] **Step 1: `constants.js` schreiben**
 
 ```js
-export const CANVAS_W = 1280;
-export const CANVAS_H = 720;
+export const CANVAS_W = 640;   // interne Auflösung — CSS skaliert auf 1280×720
+export const CANVAS_H = 360;
 export const GRAVITY = 300;        // px/s²
 export const EXPLOSION_RADIUS = 40;
 export const GORILLA_W = 64;
@@ -102,7 +102,12 @@ export const COLORS = {
       height: 100vh;
       overflow: hidden;
     }
-    canvas { display: block; image-rendering: pixelated; }
+    canvas {
+      display: block;
+      width: 1280px;
+      height: 720px;
+      image-rendering: pixelated;  /* 640×360 → 1280×720, Retro-Pixel-Look */
+    }
   </style>
 </head>
 <body>
@@ -376,9 +381,9 @@ generateTerrain();
 let allInBounds = true;
 for (let x = 0; x < CANVAS_W; x++) {
   const h = getHeight(x);
-  if (h < 200 || h > 600) { allInBounds = false; break; }
+  if (h < 100 || h > 300) { allInBounds = false; break; }
 }
-assert(allInBounds, 'alle Höhen zwischen 200 und 600');
+assert(allInBounds, 'alle Höhen zwischen 100 und 300');
 
 // Pixel unter der Oberfläche ist Terrain
 const midX = Math.floor(CANVAS_W / 2);
@@ -416,10 +421,10 @@ let _cachedImageData = null;
 export function generateTerrain() {
   terrainPx.fill(0);
   for (let x = 0; x < CANVAS_W; x++) {
-    const h = 380
-      + Math.sin(x * 0.008)        * 80
-      + Math.sin(x * 0.02  + 1.3)  * 40
-      + Math.sin(x * 0.05  + 0.7)  * 20;
+    const h = 190
+      + Math.sin(x * 0.016)        * 40
+      + Math.sin(x * 0.04  + 1.3)  * 20
+      + Math.sin(x * 0.10  + 0.7)  * 10;
     terrainH[x] = h;
     for (let y = Math.floor(h); y < CANVAS_H; y++) {
       terrainPx[y * CANVAS_W + x] = 1;
@@ -669,10 +674,10 @@ Ersetze den SETUP-Block in `main.js`:
 if (gs.phase === STATE.SETUP) {
   generateTerrain();
   // Gorillas auf dem Terrain platzieren
-  gs.players[0].x = 150;
-  gs.players[0].y = getHeight(150);
-  gs.players[1].x = CANVAS_W - 150;
-  gs.players[1].y = getHeight(CANVAS_W - 150);
+  gs.players[0].x = 75;
+  gs.players[0].y = getHeight(75);
+  gs.players[1].x = CANVAS_W - 75;
+  gs.players[1].y = getHeight(CANVAS_W - 75);
   gs.aiThinkTimer  = AI_THINK_DELAY;
   transition('SETUP_DONE');
 }
@@ -744,14 +749,14 @@ stepBanana(b2, 1.0);
 assert(b2.x > 100, 'Banane bewegt sich nach rechts bei Winkel 0°');
 
 // Test 3: Wind verschiebt Banane
-const b3 = createBanana(640, 300, 90, 50, 30); // Wind +30
+const b3 = createBanana(320, 150, 90, 50, 30); // Wind +30
 stepBanana(b3, 1.0);
-const b4 = createBanana(640, 300, 90, 50, 0);
+const b4 = createBanana(320, 150, 90, 50, 0);
 stepBanana(b4, 1.0);
 assert(b3.x > b4.x, 'Wind +30 verschiebt Banane nach rechts');
 
 // Test 4: simulateTrajectory gibt Impact zurück
-const impact = simulateTrajectory(100, 300, 45, 80, 0);
+const impact = simulateTrajectory(50, 150, 45, 80, 0);
 assert(impact !== null, 'simulateTrajectory findet Impact-Punkt');
 assert(typeof impact.x === 'number' && typeof impact.y === 'number', 'Impact hat x und y');
 
@@ -772,30 +777,38 @@ Erwartet: `FAIL`-Meldungen.
 import { GRAVITY, CANVAS_W, CANVAS_H } from './constants.js';
 import { getPixel } from './terrain.js';
 
+const SUBSTEP_THRESHOLD = 200; // px/s — darüber: 4 Sub-Schritte gegen Tunneling
+
 export function createBanana(x, y, angleDeg, power, wind) {
-  const rad = angleDeg * (Math.PI / 180);
-  const speed = power * 8; // power 0-100 → 0-800 px/s
+  const rad   = angleDeg * (Math.PI / 180);
+  const speed = power * 4; // power 0-100 → 0-400 px/s (640px-Welt)
   return {
     x,
     y,
     vx: Math.cos(rad) * speed,
-    vy: -Math.sin(rad) * speed,  // negativ = aufwärts
+    vy: -Math.sin(rad) * speed,
     wind,
     rotation: 0,
   };
 }
 
 export function stepBanana(banana, dt) {
-  banana.vx       += banana.wind * dt;
-  banana.vy       += GRAVITY * dt;
-  banana.x        += banana.vx * dt;
-  banana.y        += banana.vy * dt;
-  banana.rotation += 5 * dt;  // Rotations-Animation
+  const speed = Math.sqrt(banana.vx * banana.vx + banana.vy * banana.vy);
+  const steps = speed > SUBSTEP_THRESHOLD ? 4 : 1;
+  const sub   = dt / steps;
+
+  for (let i = 0; i < steps; i++) {
+    banana.vx += banana.wind * sub;
+    banana.vy += GRAVITY * sub;
+    banana.x  += banana.vx * sub;
+    banana.y  += banana.vy * sub;
+  }
+  banana.rotation += 5 * dt;
 }
 
 export function simulateTrajectory(x, y, angleDeg, power, wind) {
   const b  = createBanana(x, y, angleDeg, power, wind);
-  const dt = 0.016; // 60fps Simulation
+  const dt = 0.016;
   for (let i = 0; i < 5000; i++) {
     stepBanana(b, dt);
     if (b.x < 0 || b.x >= CANVAS_W || b.y >= CANVAS_H) return null;
@@ -840,20 +853,20 @@ function assert(cond, msg) {
 }
 
 // checkOutOfBounds
-assert(checkOutOfBounds({ x: -1,          y: 360 }), 'OOB: links');
-assert(checkOutOfBounds({ x: CANVAS_W +1, y: 360 }), 'OOB: rechts');
-assert(checkOutOfBounds({ x: 640,         y: CANVAS_H + 1 }), 'OOB: unten');
-assert(!checkOutOfBounds({ x: 640,        y: 360 }), 'in bounds: Mitte');
+assert(checkOutOfBounds({ x: -1,          y: 180 }), 'OOB: links');
+assert(checkOutOfBounds({ x: CANVAS_W +1, y: 180 }), 'OOB: rechts');
+assert(checkOutOfBounds({ x: 320,         y: CANVAS_H + 1 }), 'OOB: unten');
+assert(!checkOutOfBounds({ x: 320,        y: 180 }), 'in bounds: Mitte');
 assert(!checkOutOfBounds({ x: 0,          y: 0 }), 'in bounds: Ecke oben-links');
 
 // checkGorilla: Banane direkt auf Gorilla
 const players = [
-  { x: 200, y: 400 },
-  { x: 1000, y: 400 },
+  { x: 100, y: 200 },
+  { x: 500, y: 200 },
 ];
-assert(checkGorilla({ x: 200, y: 360 }, players) === 0, 'Treffer auf P1');
-assert(checkGorilla({ x: 1000, y: 360 }, players) === 1, 'Treffer auf P2');
-assert(checkGorilla({ x: 600, y: 360 }, players) === -1, 'kein Treffer in der Mitte');
+assert(checkGorilla({ x: 100, y: 160 }, players) === 0, 'Treffer auf P1');
+assert(checkGorilla({ x: 500, y: 160 }, players) === 1, 'Treffer auf P2');
+assert(checkGorilla({ x: 300, y: 160 }, players) === -1, 'kein Treffer in der Mitte');
 
 console.log('Collision-Tests fertig');
 ```
@@ -1274,12 +1287,12 @@ function processGameOver() {
   if (gs.phase !== STATE.GAME_OVER) return;
   if (keys['Space']) {
     keys['Space'] = false;
-    initGame(gs.players[1].isAI);  // gleiche Konfiguration neu starten
+    initGame(gs.players[1].isAI);
     generateTerrain();
-    gs.players[0].x = 150;
-    gs.players[0].y = getHeight(150);
-    gs.players[1].x = CANVAS_W - 150;
-    gs.players[1].y = getHeight(CANVAS_W - 150);
+    gs.players[0].x = 75;
+    gs.players[0].y = getHeight(75);
+    gs.players[1].x = CANVAS_W - 75;
+    gs.players[1].y = getHeight(CANVAS_W - 75);
     gs.aiThinkTimer  = AI_THINK_DELAY;
     transition('SETUP_DONE');
   }
