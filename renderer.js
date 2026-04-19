@@ -9,6 +9,7 @@ export function render(ctx, gs) {
   drawGorillas(ctx, gs);
   drawBanana(ctx, gs.banana);
   drawParticles(ctx, gs.particles);
+  drawGameOver(ctx, gs);
 }
 
 function drawSky(ctx) {
@@ -47,4 +48,24 @@ function drawParticles(ctx, particles) {
     ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
   }
   ctx.globalAlpha = 1;
+}
+
+function drawGameOver(ctx, gs) {
+  if (gs.phase !== STATE.GAME_OVER) return;
+
+  // Abdunkeln
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+  // Gewinner-Text
+  ctx.fillStyle    = COLORS.TEXT;
+  ctx.font         = 'bold 64px monospace';
+  ctx.textAlign    = 'center';
+  ctx.fillText(`${gs.players[gs.winner].name} gewinnt!`, CANVAS_W / 2, CANVAS_H / 2 - 40);
+
+  ctx.font      = '28px monospace';
+  ctx.fillStyle = COLORS.SURFACE;
+  ctx.fillText('Leertaste: Neues Spiel', CANVAS_W / 2, CANVAS_H / 2 + 30);
+
+  ctx.textAlign = 'left';
 }

@@ -80,6 +80,21 @@ function processNextTurn() {
   transition('NEXT_TURN_DONE');
 }
 
+function processGameOver() {
+  if (gs.phase !== STATE.GAME_OVER) return;
+  if (keys['Space']) {
+    keys['Space'] = false;
+    initGame(gs.players[1].isAI);
+    generateTerrain();
+    gs.players[0].x = 75;
+    gs.players[0].y = getHeight(75);
+    gs.players[1].x = CANVAS_W - 75;
+    gs.players[1].y = getHeight(CANVAS_W - 75);
+    gs.aiThinkTimer  = AI_THINK_DELAY;
+    transition('SETUP_DONE');
+  }
+}
+
 function tick(timestamp) {
   const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
   lastTime = timestamp;
@@ -98,6 +113,7 @@ function tick(timestamp) {
   processFlight(dt);
   processExploding(dt);
   processNextTurn();
+  processGameOver();
   render(ctx, gs);
   requestAnimationFrame(tick);
 }
