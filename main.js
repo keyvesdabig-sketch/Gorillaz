@@ -5,6 +5,7 @@ import { render } from './renderer.js';
 import { createBanana, stepBanana } from './physics.js';
 import { checkOutOfBounds, checkTerrain, checkGorilla } from './collision.js';
 import { createExplosionParticles, stepParticles } from './particles.js';
+import { drawUI } from './ui.js';
 
 const canvas = document.getElementById('game');
 const ctx    = canvas.getContext('2d');
@@ -156,6 +157,7 @@ function tick(timestamp) {
   processNextTurn();
   processGameOver();
   render(ctx, gs);
+  drawUI(ctx, gs);
   requestAnimationFrame(tick);
 }
 
