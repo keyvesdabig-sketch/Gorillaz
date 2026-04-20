@@ -64,7 +64,7 @@ function fireShot() {
 
   gs.banana = createBanana(
     shooter.x,
-    shooter.y - GORILLA_H * 0.6,
+    shooter.y - GORILLA_H * 1.0,
     angle,
     gs.aim.power,
     gs.wind,

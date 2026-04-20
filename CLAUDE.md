@@ -20,7 +20,15 @@ Rundenbasiertes Artillery-Game (HTML5 Canvas, Vanilla JS ES-Module, kein Build-T
 SETUP → AIMING → FLYING → EXPLODING → NEXT_TURN → GAME_OVER
 ```
 
-`main.js` betreibt den `requestAnimationFrame`-Loop: `update(dt)` → `render(ctx, gs)` → `drawUI(ctx, gs)`.
+`main.js` betreibt den `requestAnimationFrame`-Loop. Pro Frame werden in dieser Reihenfolge aufgerufen:
+
+```
+processAimingInput(dt) → processAI(dt) → processFlight(dt) →
+processExploding(dt) → processNextTurn() → processGameOver() →
+render(ctx, gs) → drawUI(ctx, gs)
+```
+
+Jede `process*`-Funktion prüft zuerst via Early-Return ob ihre Phase aktiv ist.
 
 **Terrain** (`terrain.js`) hält zwei parallele Datenstrukturen: `terrainH[x]` (1D Height-Array, 640 Einträge) und `terrainPx` (Uint8Array Pixel-Buffer, 640×360). Beide müssen nach `carveExplosion()` konsistent sein. `buildTerrainImageData()` ist gecacht — wird nur bei Änderung neu gebaut.
 
@@ -37,10 +45,24 @@ SETUP → AIMING → FLYING → EXPLODING → NEXT_TURN → GAME_OVER
 | `physics.js` | `createBanana`, `stepBanana`, `simulateTrajectory` |
 | `collision.js` | `checkOutOfBounds`, `checkTerrain`, `checkGorilla` (AABB) |
 | `gorilla.js` | Prozedurales Zeichnen (Idle / Throw, ~64×80 px) |
-| `renderer.js` | Layer-Reihenfolge: Himmel → Terrain → Gorillas → Banane → Partikel |
+| `renderer.js` | Layer-Reihenfolge: Himmel → Terrain → Gorillas → Banane → Partikel → GAME_OVER-Overlay |
 | `ui.js` | HP-Balken, Wind-Pfeil, Winkel/Kraft-Anzeige |
 | `ai.js` | `calculateAIShot` via `simulateTrajectory` + 30 % Ungenauigkeit |
 | `main.js` | Game Loop, Keyboard-Input, Orchestrierung |
+
+## Spielmodus umschalten
+
+In `main.js` Zeile `initGame(true/false)`:
+- `true` — P2 ist KI (Standard)
+- `false` — Hotseat (beide Spieler manuell)
+
+## Tastatur-Controls
+
+| Taste | Aktion |
+|---|---|
+| `←` / `→` | Winkel ändern (60°/s) |
+| `↑` / `↓` | Kraft ändern (40/s) |
+| `Leertaste` | Schießen / Neues Spiel (bei GAME_OVER) |
 
 ## Schaden-System
 
@@ -50,13 +72,15 @@ SETUP → AIMING → FLYING → EXPLODING → NEXT_TURN → GAME_OVER
 
 ## Tests
 
-Test-Dateien (`test-terrain.js`, `test-physics.js`, `test-collision.js`) im Browser-Console ausführen:
+Kein Build-Tool — Tests laufen ausschließlich im Browser-Console (nach `npx serve .`):
 
 ```js
-import('./test-terrain.js')
-import('./test-physics.js')
-import('./test-collision.js')
+import('./test-terrain.js')   // generateTerrain, getHeight, getPixel
+import('./test-physics.js')   // stepBanana, Gravitation, Wind
+import('./test-collision.js') // checkOutOfBounds, AABB-Gorilla
 ```
+
+Erwartete Ausgabe: `PASS:` Zeilen, abgeschlossen mit `*-Tests fertig`.
 
 ## Docs
 

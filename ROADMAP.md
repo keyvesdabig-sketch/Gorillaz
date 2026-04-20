@@ -8,19 +8,19 @@ Ziel: Erstes spielbares Build. Zwei Gorillas, zerstörbares Terrain, Hotseat + K
 
 - [x] Design Spec
 - [x] Implementierungsplan
-- [ ] Projekt-Scaffold (index.html, constants.js, Modul-Stubs)
-- [ ] State Machine (SETUP → AIMING → FLYING → EXPLODING → NEXT_TURN → GAME_OVER)
-- [ ] Terrain-Generierung (Sinus-Overlay, Pixel-Buffer, `carveExplosion`)
-- [ ] Terrain-Renderer (Sky + Terrain Layer)
-- [ ] Gorilla-Sprites (prozedural, Idle + Throw)
-- [ ] Physics Engine (`stepBanana` mit Sub-Stepping, `simulateTrajectory`)
-- [ ] Collision Detection (Terrain-Pixel, AABB-Gorilla, Out-of-Bounds)
-- [ ] Input-Handler (Tastatur: Winkel, Kraft, Schuss)
-- [ ] Bananen-Flug (FLYING State vollständig verdrahtet)
-- [ ] Explosions-System (Loch + Partikel + Schaden)
-- [ ] Game Loop (NEXT_TURN, GAME_OVER, Neustart)
-- [ ] UI-Overlay (HP-Balken, Wind-Pfeil, Winkel/Kraft-Anzeige)
-- [ ] KI-Gegner (`calculateAIShot`, 30 % Ungenauigkeit, 1,5s Delay)
+- [x] Projekt-Scaffold (index.html, constants.js, Modul-Stubs)
+- [x] State Machine (SETUP → AIMING → FLYING → EXPLODING → NEXT_TURN → GAME_OVER)
+- [x] Terrain-Generierung (Sinus-Overlay, Pixel-Buffer, `carveExplosion`)
+- [x] Terrain-Renderer (Sky + Terrain Layer)
+- [x] Gorilla-Sprites (prozedural, Idle + Throw)
+- [x] Physics Engine (`stepBanana` mit Sub-Stepping, `simulateTrajectory`)
+- [x] Collision Detection (Terrain-Pixel, AABB-Gorilla, Out-of-Bounds)
+- [x] Input-Handler (Tastatur: Winkel, Kraft, Schuss)
+- [x] Bananen-Flug (FLYING State vollständig verdrahtet)
+- [x] Explosions-System (Loch + Partikel + Schaden)
+- [x] Game Loop (NEXT_TURN, GAME_OVER, Neustart)
+- [x] UI-Overlay (HP-Balken, Wind-Pfeil, Winkel/Kraft-Anzeige)
+- [x] KI-Gegner (`calculateAIShot`, 30 % Ungenauigkeit, 1,5s Delay)
 
 ---
 

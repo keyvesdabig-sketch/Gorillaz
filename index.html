@@ -2,27 +2,296 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Modern Retro Gorillas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gorillaz Neo-Retro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --cyan: #00f2ff;
+      --magenta: #ff0055;
+      --glass: rgba(13, 2, 33, 0.7);
+      --border: rgba(0, 242, 255, 0.3);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
-      background: #000;
+      background: #020205;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       overflow: hidden;
+      user-select: none;
     }
-    canvas {
-      display: block;
+
+    #game-container {
+      position: relative;
       width: 1280px;
       height: 720px;
-      image-rendering: pixelated;  /* 640×360 → 1280×720, Retro-Pixel-Look */
+      box-shadow: 0 0 50px rgba(0, 242, 255, 0.1);
+      border: 1px solid var(--border);
+      /* Hier wird das Bild geladen */
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      background: transparent; /* Wichtig für den Hintergrund */
+    }
+
+    #ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      padding: 32px;
+    }
+
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .player-stats {
+      width: 300px;
+      padding: 16px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .player-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cyan);
+    }
+
+    .hp-bar-bg {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .hp-bar-fill {
+      height: 100%;
+      width: 100%;
+      background: var(--cyan);
+      transition: width 0.3s ease-out, background 0.3s;
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .hp-bar-fill.low {
+      background: var(--magenta);
+      box-shadow: 0 0 10px var(--magenta);
+    }
+
+    .wind-indicator {
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wind-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+      color: var(--cyan);
+    }
+
+    .wind-arrow-container {
+      width: 120px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      border-radius: 2px;
+    }
+
+    .wind-arrow-line {
+      height: 100%;
+      background: var(--cyan);
+      position: absolute;
+      left: 50%;
+      width: 0;
+      transition: width 0.5s ease;
+      box-shadow: 0 0 8px var(--cyan);
+    }
+
+    .hud-bottom {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .turn-info {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .aim-controls {
+      display: flex;
+      gap: 32px;
+      padding: 16px 32px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+    }
+
+    .aim-controls.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .control-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .control-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .control-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      color: #fff;
+    }
+
+    #game-over-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(2, 2, 5, 0.85);
+      backdrop-filter: blur(15px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+      z-index: 10;
+    }
+
+    #game-over-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .winner-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 64px;
+      margin-bottom: 24px;
+      color: var(--cyan);
+      text-shadow: 0 0 30px var(--cyan);
+    }
+
+    .restart-text {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
     }
   </style>
 </head>
 <body>
-  <canvas id="game"></canvas>
+  <div id="game-container">
+    <canvas id="game"></canvas>
+    
+    <div id="ui-layer">
+      <div class="hud-top">
+        <div class="player-stats" id="p0-stats">
+          <div class="player-name">Player 1</div>
+          <div class="hp-bar-bg">
+            <div class="hp-bar-fill" id="p0-hp"></div>
+          </div>
+        </div>
+        <div class="player-stats" id="p1-stats">
+          <div class="player-name" style="text-align: right;">AI</div>
+          <div class="hp-bar-bg">
+            <div class="hp-bar-fill" id="p1-hp"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wind-indicator">
+        <div class="wind-label">Wind Velocity</div>
+        <div class="wind-arrow-container">
+          <div class="wind-arrow-line" id="wind-line"></div>
+        </div>
+      </div>
+
+      <div class="hud-bottom">
+        <div class="turn-info" id="turn-indicator">Player 1 Turn</div>
+        <div class="aim-controls" id="aim-ui">
+          <div class="control-item">
+            <div class="control-label">Angle</div>
+            <div class="control-value"><span id="angle-val">45</span>°</div>
+          </div>
+          <div class="control-item">
+            <div class="control-label">Power</div>
+            <div class="control-value" id="power-val">50</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-over-overlay">
+      <div class="winner-text" id="winner-name">WINNER</div>
+      <div class="restart-text">Press SPACE to Restart</div>
+    </div>
+  </div>
+
   <script type="module" src="main.js"></script>
 </body>
 </html>

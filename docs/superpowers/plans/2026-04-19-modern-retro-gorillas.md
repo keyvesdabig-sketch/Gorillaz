@@ -1,6 +1,6 @@
 # Modern Retro Gorillas — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Implement a spielbares artillery-Game (Hotseat + KI) mit prozeduralem zerstörbarem Terrain, Bananen-Physik, Explosions-System und Neon-Night-Optik — als reine HTML5-Canvas-App ohne Build-Tool.
 
@@ -53,7 +53,7 @@
 - Create: `ai.js` (Stub)
 - Create: `main.js`
 
-- [ ] **Step 1: `constants.js` schreiben**
+- [x] **Step 1: `constants.js` schreiben**
 
 ```js
 export const CANVAS_W = 640;   // interne Auflösung — CSS skaliert auf 1280×720
@@ -84,7 +84,7 @@ export const COLORS = {
 };
 ```
 
-- [ ] **Step 2: `index.html` schreiben**
+- [x] **Step 2: `index.html` schreiben**
 
 ```html
 <!DOCTYPE html>
@@ -117,7 +117,7 @@ export const COLORS = {
 </html>
 ```
 
-- [ ] **Step 3: Alle Stub-Module schreiben** (ein Durchgang)
+- [x] **Step 3: Alle Stub-Module schreiben** (ein Durchgang)
 
 `state.js`:
 ```js
@@ -180,7 +180,7 @@ export function calculateAIShot(_shooter, _target, _wind) {
 }
 ```
 
-- [ ] **Step 4: `main.js` schreiben**
+- [x] **Step 4: `main.js` schreiben**
 
 ```js
 import { CANVAS_W, CANVAS_H, COLORS } from './constants.js';
@@ -199,7 +199,7 @@ function tick() {
 requestAnimationFrame(tick);
 ```
 
-- [ ] **Step 5: Server starten und verifizieren**
+- [x] **Step 5: Server starten und verifizieren**
 
 ```bash
 npx serve .
@@ -207,7 +207,7 @@ npx serve .
 
 Öffne http://localhost:3000 — erwartet: dunkler Canvas (#1a1a2e), keine Console-Fehler.
 
-- [ ] **Step 6: Git initialisieren und committen**
+- [x] **Step 6: Git initialisieren und committen**
 
 ```bash
 git init
@@ -222,7 +222,7 @@ git commit -m "feat: project scaffold with module stubs"
 **Files:**
 - Modify: `state.js`
 
-- [ ] **Step 1: Test-Erwartungen in Console kommentieren**
+- [x] **Step 1: Test-Erwartungen in Console kommentieren**
 
 Füge oben in `state.js` als Kommentar ein (wird beim nächsten Schritt gegen echte Logik getestet):
 ```
@@ -236,7 +236,7 @@ Füge oben in `state.js` als Kommentar ein (wird beim nächsten Schritt gegen ec
 // NEXT_TURN → AIMING (automatisch, schaltet Spieler um)
 ```
 
-- [ ] **Step 2: `state.js` vollständig implementieren**
+- [x] **Step 2: `state.js` vollständig implementieren**
 
 ```js
 import { GORILLA_HP, WIND_MAX, AI_THINK_DELAY, CANVAS_W } from './constants.js';
@@ -329,7 +329,7 @@ export function transition(event) {
 }
 ```
 
-- [ ] **Step 3: State Machine manuell in Console testen**
+- [x] **Step 3: State Machine manuell in Console testen**
 
 Öffne Browser-Console nach `npx serve .` und importiere:
 ```js
@@ -349,7 +349,7 @@ console.log('Alle State-Tests bestanden');
 
 Erwartet: `Alle State-Tests bestanden` ohne Fehler.
 
-- [ ] **Step 4: Committen**
+- [x] **Step 4: Committen**
 
 ```bash
 git add state.js
@@ -364,7 +364,7 @@ git commit -m "feat: state machine with transition logic"
 - Modify: `terrain.js`
 - Create: `test-terrain.js`
 
-- [ ] **Step 1: `test-terrain.js` schreiben (Test zuerst)**
+- [x] **Step 1: `test-terrain.js` schreiben (Test zuerst)**
 
 ```js
 import { generateTerrain, getHeight, getPixel } from './terrain.js';
@@ -396,7 +396,7 @@ assert(getPixel(CANVAS_W, 0) === false, 'out-of-bounds rechts ist false');
 console.log('Terrain-Tests fertig');
 ```
 
-- [ ] **Step 2: Test im Browser ausführen — Fehler erwarten**
+- [x] **Step 2: Test im Browser ausführen — Fehler erwarten**
 
 ```bash
 # Server läuft noch, öffne Console:
@@ -407,7 +407,7 @@ import('./test-terrain.js')
 
 Erwartet: mehrere `FAIL`-Meldungen (Terrain gibt noch 400 zurück).
 
-- [ ] **Step 3: `terrain.js` implementieren**
+- [x] **Step 3: `terrain.js` implementieren**
 
 ```js
 import { CANVAS_W, CANVAS_H, COLORS } from './constants.js';
@@ -501,7 +501,7 @@ export function buildTerrainImageData(ctx) {
 }
 ```
 
-- [ ] **Step 4: Tests erneut ausführen — PASS erwarten**
+- [x] **Step 4: Tests erneut ausführen — PASS erwarten**
 
 ```js
 import('./test-terrain.js')
@@ -509,7 +509,7 @@ import('./test-terrain.js')
 
 Erwartet: alle Zeilen mit `PASS:`.
 
-- [ ] **Step 5: Committen**
+- [x] **Step 5: Committen**
 
 ```bash
 git add terrain.js test-terrain.js
@@ -524,7 +524,7 @@ git commit -m "feat: terrain generation with pixel buffer and carve explosion"
 - Modify: `renderer.js`
 - Modify: `main.js`
 
-- [ ] **Step 1: `renderer.js` mit Himmel + Terrain implementieren**
+- [x] **Step 1: `renderer.js` mit Himmel + Terrain implementieren**
 
 ```js
 import { CANVAS_W, CANVAS_H, COLORS } from './constants.js';
@@ -550,7 +550,7 @@ function drawTerrain(ctx) {
 }
 ```
 
-- [ ] **Step 2: `main.js` updaten — Terrain generieren + rendern**
+- [x] **Step 2: `main.js` updaten — Terrain generieren + rendern**
 
 ```js
 import { CANVAS_W, CANVAS_H } from './constants.js';
@@ -583,11 +583,11 @@ function tick(timestamp) {
 requestAnimationFrame(tick);
 ```
 
-- [ ] **Step 3: Visuell im Browser verifizieren**
+- [x] **Step 3: Visuell im Browser verifizieren**
 
 Erwartetes Bild: Neon-Night Himmel (dunkelblau Gradient) + Hügellandschaft mit blauer Oberfläche (#53d8fb Linie) und dunklerem Terrain-Körper (#0f3460).
 
-- [ ] **Step 4: Committen**
+- [x] **Step 4: Committen**
 
 ```bash
 git add renderer.js main.js
@@ -604,7 +604,7 @@ git commit -m "feat: terrain and sky rendering"
 - Modify: `state.js` (Gorilla-Startpositionen)
 - Modify: `main.js` (Gorilla-Placement in SETUP)
 
-- [ ] **Step 1: `gorilla.js` implementieren**
+- [x] **Step 1: `gorilla.js` implementieren**
 
 ```js
 import { COLORS, GORILLA_W, GORILLA_H } from './constants.js';
@@ -666,7 +666,7 @@ export function drawGorilla(ctx, x, y, facing, animState) {
 }
 ```
 
-- [ ] **Step 2: Gorilla-Positionen in `main.js` SETUP belegen**
+- [x] **Step 2: Gorilla-Positionen in `main.js` SETUP belegen**
 
 Ersetze den SETUP-Block in `main.js`:
 
@@ -689,7 +689,7 @@ import { getHeight } from './terrain.js';
 import { AI_THINK_DELAY } from './constants.js';
 ```
 
-- [ ] **Step 3: Gorillas im Renderer zeichnen**
+- [x] **Step 3: Gorillas im Renderer zeichnen**
 
 In `renderer.js` nach `drawTerrain(ctx)` hinzufügen:
 
@@ -707,11 +707,11 @@ function drawGorillas(ctx, gs) {
 }
 ```
 
-- [ ] **Step 4: Visuell verifizieren**
+- [x] **Step 4: Visuell verifizieren**
 
 Erwartetes Bild: Zwei braune Gorillas stehen auf dem Terrain, einer links (schaut rechts), einer rechts (schaut links).
 
-- [ ] **Step 5: Committen**
+- [x] **Step 5: Committen**
 
 ```bash
 git add gorilla.js renderer.js main.js
@@ -726,7 +726,7 @@ git commit -m "feat: gorilla sprites placed on terrain"
 - Modify: `physics.js`
 - Create: `test-physics.js`
 
-- [ ] **Step 1: `test-physics.js` schreiben (Test zuerst)**
+- [x] **Step 1: `test-physics.js` schreiben (Test zuerst)**
 
 ```js
 import { createBanana, stepBanana, simulateTrajectory } from './physics.js';
@@ -763,7 +763,7 @@ assert(typeof impact.x === 'number' && typeof impact.y === 'number', 'Impact hat
 console.log('Physics-Tests fertig');
 ```
 
-- [ ] **Step 2: Test ausführen — Fehler erwarten**
+- [x] **Step 2: Test ausführen — Fehler erwarten**
 
 ```js
 import('./test-physics.js')
@@ -771,7 +771,7 @@ import('./test-physics.js')
 
 Erwartet: `FAIL`-Meldungen.
 
-- [ ] **Step 3: `physics.js` implementieren**
+- [x] **Step 3: `physics.js` implementieren**
 
 ```js
 import { GRAVITY, CANVAS_W, CANVAS_H } from './constants.js';
@@ -818,7 +818,7 @@ export function simulateTrajectory(x, y, angleDeg, power, wind) {
 }
 ```
 
-- [ ] **Step 4: Tests erneut ausführen — PASS erwarten**
+- [x] **Step 4: Tests erneut ausführen — PASS erwarten**
 
 ```js
 import('./test-physics.js')
@@ -826,7 +826,7 @@ import('./test-physics.js')
 
 Erwartet: alle `PASS:`.
 
-- [ ] **Step 5: Committen**
+- [x] **Step 5: Committen**
 
 ```bash
 git add physics.js test-physics.js
@@ -841,7 +841,7 @@ git commit -m "feat: banana physics with gravity, wind, and trajectory simulatio
 - Modify: `collision.js`
 - Create: `test-collision.js`
 
-- [ ] **Step 1: `test-collision.js` schreiben**
+- [x] **Step 1: `test-collision.js` schreiben**
 
 ```js
 import { checkOutOfBounds, checkGorilla } from './collision.js';
@@ -871,13 +871,13 @@ assert(checkGorilla({ x: 300, y: 160 }, players) === -1, 'kein Treffer in der Mi
 console.log('Collision-Tests fertig');
 ```
 
-- [ ] **Step 2: Test ausführen — Fehler erwarten**
+- [x] **Step 2: Test ausführen — Fehler erwarten**
 
 ```js
 import('./test-collision.js')
 ```
 
-- [ ] **Step 3: `collision.js` implementieren**
+- [x] **Step 3: `collision.js` implementieren**
 
 ```js
 import { CANVAS_W, CANVAS_H, GORILLA_W, GORILLA_H } from './constants.js';
@@ -906,13 +906,13 @@ export function checkGorilla(banana, players) {
 }
 ```
 
-- [ ] **Step 4: Tests ausführen — PASS erwarten**
+- [x] **Step 4: Tests ausführen — PASS erwarten**
 
 ```js
 import('./test-collision.js')
 ```
 
-- [ ] **Step 5: Committen**
+- [x] **Step 5: Committen**
 
 ```bash
 git add collision.js test-collision.js
@@ -926,7 +926,7 @@ git commit -m "feat: collision detection for terrain, gorilla AABB, and out-of-b
 **Files:**
 - Modify: `main.js`
 
-- [ ] **Step 1: Keyboard-State und Handler in `main.js` hinzufügen**
+- [x] **Step 1: Keyboard-State und Handler in `main.js` hinzufügen**
 
 Füge nach den Imports in `main.js` ein:
 
@@ -939,7 +939,7 @@ window.addEventListener('keydown', e => {
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 ```
 
-- [ ] **Step 2: `processAimingInput(dt)` Funktion in `main.js` schreiben**
+- [x] **Step 2: `processAimingInput(dt)` Funktion in `main.js` schreiben**
 
 ```js
 const AIM_SPEED   = 60;  // Grad/Sekunde
@@ -961,7 +961,7 @@ function processAimingInput(dt) {
 }
 ```
 
-- [ ] **Step 3: `fireShot()` in `main.js` schreiben**
+- [x] **Step 3: `fireShot()` in `main.js` schreiben**
 
 ```js
 import { createBanana } from './physics.js';
@@ -983,7 +983,7 @@ function fireShot() {
 }
 ```
 
-- [ ] **Step 4: `processAimingInput` in den Game Loop einbinden**
+- [x] **Step 4: `processAimingInput` in den Game Loop einbinden**
 
 Im `tick`-Handler, nach dem SETUP-Block und vor `render(ctx, gs)`:
 
@@ -991,12 +991,12 @@ Im `tick`-Handler, nach dem SETUP-Block und vor `render(ctx, gs)`:
 processAimingInput(dt);
 ```
 
-- [ ] **Step 5: Verifizieren**
+- [x] **Step 5: Verifizieren**
 
 - Öffne Browser, drücke `←` / `→` / `↑` / `↓` — prüfe in Console: `gs.aim` ändert sich.
 - Drücke `Space` — prüfe: `gs.phase === 'FLYING'`.
 
-- [ ] **Step 6: Committen**
+- [x] **Step 6: Committen**
 
 ```bash
 git add main.js
@@ -1011,7 +1011,7 @@ git commit -m "feat: keyboard input for aiming angle, power, and shoot"
 - Modify: `main.js`
 - Modify: `renderer.js`
 
-- [ ] **Step 1: FLYING-Update-Logik in `main.js` hinzufügen**
+- [x] **Step 1: FLYING-Update-Logik in `main.js` hinzufügen**
 
 Füge in die `tick`-Funktion nach `processAimingInput(dt)` ein:
 
@@ -1047,7 +1047,7 @@ Und im `tick`-Loop:
 processFlight(dt);
 ```
 
-- [ ] **Step 2: NEXT_TURN automatisch verarbeiten**
+- [x] **Step 2: NEXT_TURN automatisch verarbeiten**
 
 ```js
 function processNextTurn() {
@@ -1061,7 +1061,7 @@ Im `tick`-Loop:
 processNextTurn();
 ```
 
-- [ ] **Step 3: Banane im Renderer zeichnen**
+- [x] **Step 3: Banane im Renderer zeichnen**
 
 In `renderer.js` nach `drawGorillas()` aufrufen:
 
@@ -1082,13 +1082,13 @@ In `render()`:
 drawBanana(ctx, gs.banana);
 ```
 
-- [ ] **Step 4: Verifizieren**
+- [x] **Step 4: Verifizieren**
 
 - Schieß mit `Space` ab — die Banane fliegt sichtbar über den Screen.
 - Treffer auf Terrain: Banane verschwindet, Spieler wechselt (kein Loch noch, kommt in Task 10).
 - Out of Bounds: Spieler wechselt.
 
-- [ ] **Step 5: Committen**
+- [x] **Step 5: Committen**
 
 ```bash
 git add main.js renderer.js
@@ -1104,7 +1104,7 @@ git commit -m "feat: banana flight with collision detection and turn switching"
 - Modify: `main.js`
 - Modify: `renderer.js`
 
-- [ ] **Step 1: `particles.js` implementieren**
+- [x] **Step 1: `particles.js` implementieren**
 
 ```js
 import { COLORS, CANVAS_H } from './constants.js';
@@ -1138,7 +1138,7 @@ export function stepParticles(particles, dt) {
 }
 ```
 
-- [ ] **Step 2: EXPLODING-Logik in `main.js` hinzufügen**
+- [x] **Step 2: EXPLODING-Logik in `main.js` hinzufügen**
 
 Füge `triggerExplosion` und `processExploding` hinzu:
 
@@ -1207,7 +1207,7 @@ Im `tick`-Loop ergänzen:
 processExploding(dt);
 ```
 
-- [ ] **Step 3: Partikel im Renderer zeichnen**
+- [x] **Step 3: Partikel im Renderer zeichnen**
 
 In `renderer.js`:
 
@@ -1227,14 +1227,14 @@ In `render()` nach `drawBanana`:
 drawParticles(ctx, gs.particles);
 ```
 
-- [ ] **Step 4: Visuell verifizieren**
+- [x] **Step 4: Visuell verifizieren**
 
 - Banane trifft Terrain → Loch erscheint + Partikel-Explosion in Neon-Farben.
 - Partikel verblassen nach ~1,5s.
 - Nach der Explosion ist das Loch dauerhaft im Terrain sichtbar.
 - Gorilla fällt in Loch → snappt auf neues Terrain-Level.
 
-- [ ] **Step 5: Committen**
+- [x] **Step 5: Committen**
 
 ```bash
 git add particles.js main.js renderer.js
@@ -1249,7 +1249,7 @@ git commit -m "feat: explosion carves terrain hole and spawns neon particles"
 - Modify: `renderer.js`
 - Modify: `main.js`
 
-- [ ] **Step 1: GAME_OVER-Screen in `renderer.js` hinzufügen**
+- [x] **Step 1: GAME_OVER-Screen in `renderer.js` hinzufügen**
 
 ```js
 function drawGameOver(ctx, gs) {
@@ -1278,7 +1278,7 @@ In `render()` ganz am Ende:
 drawGameOver(ctx, gs);
 ```
 
-- [ ] **Step 2: Neues Spiel bei Space auf GAME_OVER**
+- [x] **Step 2: Neues Spiel bei Space auf GAME_OVER**
 
 In `main.js` — in `processAimingInput` oder separat:
 
@@ -1304,13 +1304,13 @@ Im `tick`-Loop:
 processGameOver();
 ```
 
-- [ ] **Step 3: Verifizieren**
+- [x] **Step 3: Verifizieren**
 
 - Spiel vollständig durchspielen (einen Gorilla auf 0 HP bringen).
 - GAME_OVER-Screen erscheint mit Gewinner-Name.
 - Leertaste startet neues Spiel mit neuem Terrain.
 
-- [ ] **Step 4: Committen**
+- [x] **Step 4: Committen**
 
 ```bash
 git add renderer.js main.js
@@ -1325,7 +1325,7 @@ git commit -m "feat: game over screen with winner display and new game restart"
 - Modify: `ui.js`
 - Modify: `main.js`
 
-- [ ] **Step 1: `ui.js` implementieren**
+- [x] **Step 1: `ui.js` implementieren**
 
 ```js
 import { CANVAS_W, CANVAS_H, COLORS, GORILLA_HP, WIND_MAX } from './constants.js';
@@ -1428,7 +1428,7 @@ function drawTurnIndicator(ctx, gs) {
 }
 ```
 
-- [ ] **Step 2: `drawUI` in `main.js` aufrufen**
+- [x] **Step 2: `drawUI` in `main.js` aufrufen**
 
 Füge zu Imports hinzu:
 ```js
@@ -1440,14 +1440,14 @@ Im `tick`-Loop nach `render(ctx, gs)`:
 drawUI(ctx, gs);
 ```
 
-- [ ] **Step 3: Visuell verifizieren**
+- [x] **Step 3: Visuell verifizieren**
 
 - HP-Balken beider Spieler sichtbar, werden nach Treffer kleiner.
 - Wind-Pfeil in der Mitte oben zeigt Richtung und Stärke.
 - Während AIMING: Winkel und Kraft unten eingeblendet.
 - Spieler-Name oben in der Mitte zeigt, wer dran ist.
 
-- [ ] **Step 4: Committen**
+- [x] **Step 4: Committen**
 
 ```bash
 git add ui.js main.js
@@ -1462,7 +1462,7 @@ git commit -m "feat: UI overlay with HP bars, wind arrow, and aim display"
 - Modify: `ai.js`
 - Modify: `main.js`
 
-- [ ] **Step 1: `ai.js` implementieren**
+- [x] **Step 1: `ai.js` implementieren**
 
 ```js
 import { simulateTrajectory } from './physics.js';
@@ -1503,7 +1503,7 @@ export function calculateAIShot(shooter, target, wind) {
 }
 ```
 
-- [ ] **Step 2: KI-Logik in `main.js` verdrahten**
+- [x] **Step 2: KI-Logik in `main.js` verdrahten**
 
 Füge eine `processAI(dt)` Funktion hinzu:
 
@@ -1531,7 +1531,7 @@ Im `tick`-Loop nach `processAimingInput(dt)`:
 processAI(dt);
 ```
 
-- [ ] **Step 3: KI aktivieren — Spielstart mit KI-Gegner**
+- [x] **Step 3: KI aktivieren — Spielstart mit KI-Gegner**
 
 In `main.js` — `initGame` auf `true` für P2 stellen:
 
@@ -1539,14 +1539,14 @@ In `main.js` — `initGame` auf `true` für P2 stellen:
 initGame(true);  // true = P2 ist KI
 ```
 
-- [ ] **Step 4: Verifizieren**
+- [x] **Step 4: Verifizieren**
 
 - Spiel starten — P1 zielt manuell, P2 (KI) schießt nach 1,5s automatisch.
 - KI trifft nicht immer, aber schießt in die richtige Richtung.
 - Vollständige Runden-Schleife: P1 schießt → P2 KI schießt → ... bis GAME_OVER.
 - `initGame(false)` testen für Hotseat-Modus.
 
-- [ ] **Step 5: Finaler Commit**
+- [x] **Step 5: Finaler Commit**
 
 ```bash
 git add ai.js main.js
@@ -1559,12 +1559,12 @@ git commit -m "feat: AI opponent with trajectory simulation and configurable ina
 
 Nach Task 13 manuell prüfen:
 
-- [ ] Vollständiges Hotseat-Spiel (`initGame(false)`): P1 vs P2, Terrain zerstörbar, HP-System, GAME_OVER, Neustart
-- [ ] Vollständiges KI-Spiel (`initGame(true)`): P1 vs KI, KI schießt automatisch mit 1,5s Delay
-- [ ] Explosion hinterlässt dauerhaftes Loch im Terrain
-- [ ] Partikel in Neon-Farben erscheinen und verblassen
-- [ ] HP-Balken aktualisieren sich korrekt
-- [ ] Wind-Pfeil stimmt mit Bananen-Drift überein
-- [ ] GAME_OVER mit korrektem Gewinnernamen
-- [ ] Neustart generiert frisches Terrain
-- [ ] Keine Console-Fehler während normalem Spielverlauf
+- [x] Vollständiges Hotseat-Spiel (`initGame(false)`): P1 vs P2, Terrain zerstörbar, HP-System, GAME_OVER, Neustart
+- [x] Vollständiges KI-Spiel (`initGame(true)`): P1 vs KI, KI schießt automatisch mit 1,5s Delay
+- [x] Explosion hinterlässt dauerhaftes Loch im Terrain
+- [x] Partikel in Neon-Farben erscheinen und verblassen
+- [x] HP-Balken aktualisieren sich korrekt
+- [x] Wind-Pfeil stimmt mit Bananen-Drift überein
+- [x] GAME_OVER mit korrektem Gewinnernamen
+- [x] Neustart generiert frisches Terrain
+- [x] Keine Console-Fehler während normalem Spielverlauf

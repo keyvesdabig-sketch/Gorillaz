@@ -12,10 +12,10 @@ export function calculateAIShot(shooter, target, wind) {
     const direction  = dx > 0 ? 1 : -1;
 
     for (let aDelta = -30; aDelta <= 30; aDelta += 5) {
-      const angle    = direction > 0
-        ? baseAngle + aDelta
-        : 180 - baseAngle - aDelta;
-      const impact   = simulateTrajectory(shooter.x, startY, angle, power, wind);
+      const angleRel = baseAngle + aDelta;
+      const angleAbs = direction > 0 ? angleRel : 180 - angleRel;
+      
+      const impact   = simulateTrajectory(shooter.x, startY, angleAbs, power, wind);
       if (!impact) continue;
 
       const dist = Math.abs(impact.x - target.x);
@@ -23,14 +23,13 @@ export function calculateAIShot(shooter, target, wind) {
         // Treffer nah genug — 30% Ungenauigkeit hinzufügen
         const inaccuracy = (Math.random() - 0.5) * 2 * AI_INACCURACY;
         return {
-          angle: angle + inaccuracy,
+          angle: angleRel + inaccuracy,
           power: Math.max(5, Math.min(100, power + (Math.random() - 0.5) * 20)),
         };
       }
     }
   }
 
-  // Fallback: ungefährer Direktschuss
-  const roughAngle = dx > 0 ? 45 : 135;
-  return { angle: roughAngle, power: 60 };
+  // Fallback: ungefährer Direktschuss (relativ 45 Grad)
+  return { angle: 45, power: 60 };
 }
