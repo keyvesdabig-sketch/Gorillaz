@@ -1,7 +1,7 @@
 import { isGorillaAirborne } from './collision.js';
 import { stepGorillaFall } from './physics.js';
 import { GRAVITY } from './constants.js';
-import { generateTerrain } from './terrain.js';
+import { generateTerrain, getHeight } from './terrain.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);
@@ -19,6 +19,10 @@ assert(isGorillaAirborne(gs1, 0) === true,  'Gorilla bei y=10 ist in der Luft');
 // Gorilla bei y=400 (unterhalb jedes möglichen Terrains) → nicht airborne
 const gs2 = { players: [{ x: 100, y: 400 }, { x: 500, y: 400 }] };
 assert(isGorillaAirborne(gs2, 0) === false, 'Gorilla bei y=400 ist nicht in der Luft');
+
+// Gorilla exakt auf Terrain-Oberfläche → nicht airborne (0.5px epsilon)
+const gsExact = { players: [{ x: 200, y: getHeight(200) }] };
+assert(isGorillaAirborne(gsExact, 0) === false, 'Gorilla exakt auf Terrain ist nicht in der Luft');
 
 // --- stepGorillaFall ---
 

@@ -26,3 +26,7 @@ export const COLORS = {
   CITY_GLOW:    'rgba(0,0,0,0)', // Deaktiviert für Natur-Look
   STAR_COLOR:   'rgba(255,255,255,0.5)',
 };
+
+export const FALL_THRESHOLD_PX = 20;
+export const FALL_DAMAGE_FACTOR = 0.15;
+export const FALL_DAMAGE_MAX    = 20;

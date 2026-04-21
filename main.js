@@ -1,4 +1,4 @@
-import { CANVAS_W, CANVAS_H, AI_THINK_DELAY, GORILLA_H, EXPLOSION_RADIUS } from './constants.js';
+import { CANVAS_W, CANVAS_H, AI_THINK_DELAY, GORILLA_H, EXPLOSION_RADIUS, FALL_THRESHOLD_PX, FALL_DAMAGE_FACTOR, FALL_DAMAGE_MAX } from './constants.js';
 import { gs, STATE, transition, initGame } from './state.js';
 import { generateTerrain, getHeight, carveExplosion } from './terrain.js';
 import { render } from './renderer.js';
@@ -149,8 +149,8 @@ function processFalling(dt) {
   if (!result.landed) return;
 
   const fallHeight = gs.players[gs.fallingIdx].y - gs.fallStartY;
-  if (fallHeight > 20) {
-    const dmg = Math.min(Math.floor(fallHeight * 0.15), 20);
+  if (fallHeight > FALL_THRESHOLD_PX) {
+    const dmg = Math.min(Math.floor(fallHeight * FALL_DAMAGE_FACTOR), FALL_DAMAGE_MAX);
     gs.players[gs.fallingIdx].hp = Math.max(0, gs.players[gs.fallingIdx].hp - dmg);
   }
 
