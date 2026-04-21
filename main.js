@@ -7,6 +7,8 @@ import { checkOutOfBounds, checkTerrain, checkGorilla, isGorillaAirborne } from 
 import { createExplosionParticles, stepParticles } from './particles.js';
 import { drawUI } from './ui.js';
 import { calculateAIShot } from './ai.js';
+import { initAudio, playShoot, playExplosion, playDeath } from './audio.js';
+import { initVolumeOverlay, toggleVolumeOverlay } from './volume-overlay.js';
 
 const canvas = document.getElementById('game');
 const ctx    = canvas.getContext('2d');
@@ -15,6 +17,8 @@ canvas.height = CANVAS_H;
 
 const keys = {};
 window.addEventListener('keydown', e => {
+  initAudio();
+  if (e.code === 'KeyM') toggleVolumeOverlay();
   keys[e.code] = true;
   e.preventDefault();
 });
@@ -24,6 +28,7 @@ const AIM_SPEED   = 60;
 const POWER_SPEED = 40;
 
 initGame(true); // true = P2 ist KI
+initVolumeOverlay();
 
 let lastTime = 0;
 
@@ -70,12 +75,14 @@ function fireShot() {
     gs.wind,
   );
   transition('SHOOT');
+  playShoot();
 }
 
 // directHitIdx: Index des Gorillas mit Direkttreffer (-1 = kein Direkttreffer)
 function triggerExplosion(cx, cy, directHitIdx = -1) {
   carveExplosion(cx, cy, EXPLOSION_RADIUS);
   gs.particles = [...gs.particles, ...createExplosionParticles(cx, cy)];
+  playExplosion();
 
   for (let i = 0; i < gs.players.length; i++) {
     const p  = gs.players[i];
@@ -94,6 +101,7 @@ function triggerExplosion(cx, cy, directHitIdx = -1) {
   }
 
   gs.banana = null;
+  if (gs.players.some(p => p.hp === 0)) playDeath();
 }
 
 function processFlight(dt) {

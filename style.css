@@ -249,3 +249,62 @@ canvas {
     opacity: 0.4;
   }
 }
+#volume-overlay {
+  position: absolute;
+  bottom: 120px;
+  right: 32px;
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  z-index: 20;
+  pointer-events: auto;
+  min-width: 280px;
+}
+
+.vol-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  margin-bottom: 4px;
+}
+
+.vol-hint {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.vol-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vol-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.6);
+  width: 56px;
+}
+
+.vol-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+
+.vol-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  color: var(--cyan);
+  width: 28px;
+  text-align: right;
+}

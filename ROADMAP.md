@@ -27,7 +27,7 @@ Ziel: Erstes spielbares Build. Zwei Gorillas, zerstörbares Terrain, Hotseat + K
 ## v2 — Polish & Sound
 
 - [x] **Gorilla Falling-State** — physikalisches Fallen wenn Terrain wegexplodiert (statt Snap)
-- [ ] **Audio (`audio.js`)** — Web Audio API Synthesizer-Sounds: "Plopp" beim Schuss, Rauschen bei Explosion
+- [x] **Audio (`audio.js`)** — Web Audio API Synthesizer-Sounds: "Plopp" beim Schuss, Rauschen bei Explosion
 - [ ] **Screen Shake** — kurzes Canvas-Wackeln bei Einschlag
 - [ ] **Touch-Steuerung** — On-Canvas-Buttons für Tablet/Smartphone
 
