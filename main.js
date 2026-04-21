@@ -8,6 +8,7 @@ import { createExplosionParticles, stepParticles } from './particles.js';
 import { drawUI } from './ui.js';
 import { calculateAIShot } from './ai.js';
 import { initAudio, playShoot, playExplosion, playDeath } from './audio.js';
+import { initVolumeOverlay, toggleVolumeOverlay } from './volume-overlay.js';
 
 const canvas = document.getElementById('game');
 const ctx    = canvas.getContext('2d');
@@ -17,6 +18,7 @@ canvas.height = CANVAS_H;
 const keys = {};
 window.addEventListener('keydown', e => {
   initAudio();
+  if (e.code === 'KeyM') toggleVolumeOverlay();
   keys[e.code] = true;
   e.preventDefault();
 });
@@ -26,6 +28,7 @@ const AIM_SPEED   = 60;
 const POWER_SPEED = 40;
 
 initGame(true); // true = P2 ist KI
+initVolumeOverlay();
 
 let lastTime = 0;
 
