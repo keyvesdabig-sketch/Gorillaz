@@ -27,6 +27,7 @@ export function playShoot() {
   gain.gain.linearRampToValueAtTime(0, t + 0.15);
   osc.connect(gain);
   gain.connect(fxMaster);
+  osc.onended = () => { osc.disconnect(); gain.disconnect(); };
   osc.start(t);
   osc.stop(t + 0.15);
 }
@@ -54,6 +55,7 @@ export function playExplosion() {
   source.connect(filter);
   filter.connect(gain);
   gain.connect(fxMaster);
+  source.onended = () => { source.disconnect(); filter.disconnect(); gain.disconnect(); };
   source.start(t);
 }
 
@@ -69,6 +71,7 @@ export function playDeath() {
     gain.gain.setValueAtTime(0,    t + (i + 1) * 0.12);
     osc.connect(gain);
     gain.connect(fxMaster);
+    osc.onended = () => { osc.disconnect(); gain.disconnect(); };
     osc.start(t + i * 0.12);
     osc.stop(t + (i + 1) * 0.12);
   });
