@@ -1,5 +1,5 @@
 import { CANVAS_W, CANVAS_H, GORILLA_W, GORILLA_H } from './constants.js';
-import { getPixel } from './terrain.js';
+import { getPixel, getHeight } from './terrain.js';
 
 export function checkOutOfBounds(banana) {
   return banana.x < 0 || banana.x > CANVAS_W || banana.y > CANVAS_H;
@@ -21,4 +21,9 @@ export function checkGorilla(banana, players) {
     ) return i;
   }
   return -1;
+}
+
+export function isGorillaAirborne(gs, idx) {
+  const p = gs.players[idx];
+  return p.y < getHeight(p.x);
 }
