@@ -1,5 +1,5 @@
 import { GRAVITY, CANVAS_W, CANVAS_H } from './constants.js';
-import { getPixel } from './terrain.js';
+import { getPixel, getHeight } from './terrain.js';
 
 const SUBSTEP_THRESHOLD = 200;
 
@@ -60,4 +60,16 @@ export function getTrajectoryPoints(x, y, angleDeg, power, wind) {
     if (b.x < 0 || b.x >= CANVAS_W || b.y >= CANVAS_H || getPixel(b.x, b.y)) break;
   }
   return points;
+}
+
+export function stepGorillaFall(gs, dt) {
+  const p = gs.players[gs.fallingIdx];
+  gs.fallingVY += GRAVITY * dt;
+  p.y += gs.fallingVY * dt;
+  const groundY = getHeight(p.x);
+  if (p.y >= groundY) {
+    p.y = groundY;
+    return { landed: true };
+  }
+  return { landed: false };
 }
