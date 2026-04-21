@@ -1,4 +1,5 @@
 let audioCtx = null;
+const DEATH_FREQS = [523.25, 493.88, 466.16, 440, 415.30, 392];
 
 export function initAudio() {
   if (audioCtx) return;
@@ -45,4 +46,19 @@ export function playExplosion() {
   gain.connect(audioCtx.destination);
   source.start(t);
 }
-export function playDeath()     {}
+export function playDeath() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  DEATH_FREQS.forEach((freq, i) => {
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, t + i * 0.12);
+    gain.gain.setValueAtTime(0.25, t + i * 0.12);
+    gain.gain.setValueAtTime(0,    t + (i + 1) * 0.12);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(t + i * 0.12);
+    osc.stop(t + (i + 1) * 0.12);
+  });
+}

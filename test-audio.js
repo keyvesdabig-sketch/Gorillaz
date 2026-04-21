@@ -25,4 +25,8 @@ noThrow = true;
 try { playExplosion(); } catch(e) { noThrow = false; }
 assert(noThrow, 'playExplosion() wirft keinen Fehler nach initAudio()');
 
+noThrow = true;
+try { playDeath(); } catch(e) { noThrow = false; }
+assert(noThrow, 'playDeath() wirft keinen Fehler nach initAudio()');
+
 console.log('Audio-Tests fertig');
