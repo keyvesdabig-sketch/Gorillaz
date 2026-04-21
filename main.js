@@ -160,6 +160,7 @@ function processFalling(dt) {
   }
 
   for (let i = 0; i < gs.players.length; i++) {
+    if (i === gs.fallingIdx) continue;
     if (isGorillaAirborne(gs, i)) {
       gs.fallingIdx = i;
       gs.fallStartY = gs.players[i].y;

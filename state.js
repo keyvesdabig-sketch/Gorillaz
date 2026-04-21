@@ -83,6 +83,8 @@ export function transition(event) {
 
     case STATE.FALLING:
       if (event === 'LAND') {
+        gs.fallingIdx = -1;
+        gs.fallingVY  = 0;
         if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
           gs.winner = gs.players[0].hp > 0 ? 0 : 1;
           gs.phase  = STATE.GAME_OVER;
