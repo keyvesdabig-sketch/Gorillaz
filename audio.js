@@ -20,5 +20,29 @@ export function playShoot() {
   osc.start(t);
   osc.stop(t + 0.15);
 }
-export function playExplosion() {}
+export function playExplosion() {
+  if (!audioCtx) return;
+  const sampleRate = audioCtx.sampleRate;
+  const frameCount = Math.floor(sampleRate * 0.5);
+  const buffer     = audioCtx.createBuffer(1, frameCount, sampleRate);
+  const data       = buffer.getChannelData(0);
+  for (let i = 0; i < frameCount; i++) data[i] = Math.random() * 2 - 1;
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  const gain = audioCtx.createGain();
+  const t = audioCtx.currentTime;
+  filter.frequency.setValueAtTime(800, t);
+  filter.frequency.linearRampToValueAtTime(100, t + 0.5);
+  gain.gain.setValueAtTime(0.5, t);
+  gain.gain.linearRampToValueAtTime(0, t + 0.5);
+
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  source.start(t);
+}
 export function playDeath()     {}

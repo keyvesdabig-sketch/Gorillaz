@@ -21,4 +21,8 @@ noThrow = true;
 try { playShoot(); } catch(e) { noThrow = false; }
 assert(noThrow, 'playShoot() zweimal aufrufbar ohne Fehler');
 
+noThrow = true;
+try { playExplosion(); } catch(e) { noThrow = false; }
+assert(noThrow, 'playExplosion() wirft keinen Fehler nach initAudio()');
+
 console.log('Audio-Tests fertig');
