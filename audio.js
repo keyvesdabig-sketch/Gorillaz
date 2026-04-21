@@ -1,10 +1,19 @@
 let audioCtx = null;
+let fxMaster = null;
+let musicEl  = null;
+let ambientEl = null;
 const DEATH_FREQS = [523.25, 493.88, 466.16, 440, 415.30, 392];
 
 export function initAudio() {
   if (audioCtx) return;
   audioCtx = new AudioContext();
+  fxMaster  = audioCtx.createGain();
+  fxMaster.connect(audioCtx.destination);
 }
+
+export function setFxVolume(v)      { if (fxMaster)  fxMaster.gain.value = v; }
+export function setMusicVolume(v)   { if (musicEl)   musicEl.volume = v; }
+export function setAmbientVolume(v) { if (ambientEl) ambientEl.volume = v; }
 
 export function playShoot() {
   if (!audioCtx) return;
@@ -17,10 +26,11 @@ export function playShoot() {
   gain.gain.setValueAtTime(0.3, t);
   gain.gain.linearRampToValueAtTime(0, t + 0.15);
   osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(fxMaster);
   osc.start(t);
   osc.stop(t + 0.15);
 }
+
 export function playExplosion() {
   if (!audioCtx) return;
   const sampleRate = audioCtx.sampleRate;
@@ -43,9 +53,10 @@ export function playExplosion() {
 
   source.connect(filter);
   filter.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(fxMaster);
   source.start(t);
 }
+
 export function playDeath() {
   if (!audioCtx) return;
   const t = audioCtx.currentTime;
@@ -57,7 +68,7 @@ export function playDeath() {
     gain.gain.setValueAtTime(0.25, t + i * 0.12);
     gain.gain.setValueAtTime(0,    t + (i + 1) * 0.12);
     osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(fxMaster);
     osc.start(t + i * 0.12);
     osc.stop(t + (i + 1) * 0.12);
   });

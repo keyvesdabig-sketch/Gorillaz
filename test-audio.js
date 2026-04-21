@@ -1,4 +1,4 @@
-import { initAudio, playShoot, playExplosion, playDeath } from './audio.js';
+import { initAudio, playShoot, playExplosion, playDeath, setFxVolume } from './audio.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);
@@ -28,5 +28,15 @@ assert(noThrow, 'playExplosion() wirft keinen Fehler nach initAudio()');
 noThrow = true;
 try { playDeath(); } catch(e) { noThrow = false; }
 assert(noThrow, 'playDeath() wirft keinen Fehler nach initAudio()');
+
+assert(typeof setFxVolume === 'function', 'setFxVolume ist exportiert');
+
+noThrow = true;
+try { setFxVolume(0.5); } catch(e) { noThrow = false; }
+assert(noThrow, 'setFxVolume(0.5) wirft keinen Fehler nach initAudio()');
+
+noThrow = true;
+try { setFxVolume(0); } catch(e) { noThrow = false; }
+assert(noThrow, 'setFxVolume(0) wirft keinen Fehler');
 
 console.log('Audio-Tests fertig');
