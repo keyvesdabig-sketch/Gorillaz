@@ -30,7 +30,7 @@ body {
   height: 720px;
   box-shadow: 0 0 50px rgba(0, 242, 255, 0.1);
   border: 1px solid var(--border);
-  background-image: url('background.jpg');
+  background-image: url('assets/background.jpg');
   background-size: cover;
   background-position: center;
 }

@@ -1,4 +1,4 @@
-import { initVolumeOverlay, toggleVolumeOverlay } from './volume-overlay.js';
+import { initVolumeOverlay, toggleVolumeOverlay } from '../src/volume-overlay.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);

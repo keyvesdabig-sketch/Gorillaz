@@ -1,4 +1,4 @@
-import { initAudio, playShoot, playExplosion, playDeath, setFxVolume, setMusicVolume, setAmbientVolume } from './audio.js';
+import { initAudio, playShoot, playExplosion, playDeath, setFxVolume, setMusicVolume, setAmbientVolume } from '../src/audio.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);

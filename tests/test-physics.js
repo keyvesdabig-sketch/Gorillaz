@@ -1,6 +1,6 @@
-import { createBanana, stepBanana, simulateTrajectory } from './physics.js';
-import { GRAVITY } from './constants.js';
-import { generateTerrain } from './terrain.js';
+import { createBanana, stepBanana, simulateTrajectory } from '../src/physics.js';
+import { GRAVITY } from '../src/constants.js';
+import { generateTerrain } from '../src/terrain.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);

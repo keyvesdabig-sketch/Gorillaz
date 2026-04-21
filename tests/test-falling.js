@@ -1,7 +1,7 @@
-import { isGorillaAirborne } from './collision.js';
-import { stepGorillaFall } from './physics.js';
-import { GRAVITY } from './constants.js';
-import { generateTerrain, getHeight } from './terrain.js';
+import { isGorillaAirborne } from '../src/collision.js';
+import { stepGorillaFall } from '../src/physics.js';
+import { GRAVITY } from '../src/constants.js';
+import { generateTerrain, getHeight } from '../src/terrain.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);

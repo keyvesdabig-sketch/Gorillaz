@@ -1,5 +1,5 @@
-import { generateTerrain, getHeight, getPixel, carveExplosion } from './terrain.js';
-import { CANVAS_W, CANVAS_H, EXPLOSION_RADIUS } from './constants.js';
+import { generateTerrain, getHeight, getPixel, carveExplosion } from '../src/terrain.js';
+import { CANVAS_W, CANVAS_H, EXPLOSION_RADIUS } from '../src/constants.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);

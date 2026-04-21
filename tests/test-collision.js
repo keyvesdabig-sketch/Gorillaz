@@ -1,6 +1,6 @@
-import { checkOutOfBounds, checkTerrain, checkGorilla } from './collision.js';
-import { CANVAS_W, CANVAS_H, GORILLA_W, GORILLA_H } from './constants.js';
-import { generateTerrain } from './terrain.js';
+import { checkOutOfBounds, checkTerrain, checkGorilla } from '../src/collision.js';
+import { CANVAS_W, CANVAS_H, GORILLA_W, GORILLA_H } from '../src/constants.js';
+import { generateTerrain } from '../src/terrain.js';
 
 function assert(cond, msg) {
   if (!cond) console.error(`FAIL: ${msg}`);
