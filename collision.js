@@ -25,5 +25,5 @@ export function checkGorilla(banana, players) {
 
 export function isGorillaAirborne(gs, idx) {
   const p = gs.players[idx];
-  return p.y < getHeight(p.x);
+  return p.y < getHeight(p.x) - 0.5;
 }
