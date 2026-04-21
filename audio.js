@@ -13,6 +13,9 @@ export function initAudio() {
   musicEl.loop   = true;
   musicEl.volume = 0.5;
   musicEl.play().catch(() => {});
+  ambientEl = new Audio();
+  ambientEl.loop   = true;
+  ambientEl.volume = 0.3;
 }
 
 export function setFxVolume(v)      { if (fxMaster)  fxMaster.gain.value = v; }
