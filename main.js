@@ -2,8 +2,8 @@ import { CANVAS_W, CANVAS_H, AI_THINK_DELAY, GORILLA_H, EXPLOSION_RADIUS } from 
 import { gs, STATE, transition, initGame } from './state.js';
 import { generateTerrain, getHeight, carveExplosion } from './terrain.js';
 import { render } from './renderer.js';
-import { createBanana, stepBanana } from './physics.js';
-import { checkOutOfBounds, checkTerrain, checkGorilla } from './collision.js';
+import { createBanana, stepBanana, stepGorillaFall } from './physics.js';
+import { checkOutOfBounds, checkTerrain, checkGorilla, isGorillaAirborne } from './collision.js';
 import { createExplosionParticles, stepParticles } from './particles.js';
 import { drawUI } from './ui.js';
 import { calculateAIShot } from './ai.js';
@@ -124,12 +124,51 @@ function processExploding(dt) {
   gs.explodeTimer = Math.max(0, gs.explodeTimer - dt);
 
   if (gs.explodeTimer <= 0 && gs.particles.length === 0) {
-    // Gorillas auf neues Terrain-Level snappen
-    for (const p of gs.players) {
-      p.y = getHeight(p.x);
+    if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
+      transition('EXPLODE_DONE');
+      return;
     }
+    for (let i = 0; i < gs.players.length; i++) {
+      if (isGorillaAirborne(gs, i)) {
+        gs.fallingIdx = i;
+        gs.fallStartY = gs.players[i].y;
+        gs.fallingVY  = 0;
+        transition('FALL');
+        return;
+      }
+    }
+    for (const p of gs.players) p.y = getHeight(p.x);
     transition('EXPLODE_DONE');
   }
+}
+
+function processFalling(dt) {
+  if (gs.phase !== STATE.FALLING) return;
+
+  const result = stepGorillaFall(gs, dt);
+  if (!result.landed) return;
+
+  const fallHeight = gs.players[gs.fallingIdx].y - gs.fallStartY;
+  if (fallHeight > 20) {
+    const dmg = Math.min(Math.floor(fallHeight * 0.15), 20);
+    gs.players[gs.fallingIdx].hp = Math.max(0, gs.players[gs.fallingIdx].hp - dmg);
+  }
+
+  if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
+    transition('LAND');
+    return;
+  }
+
+  for (let i = 0; i < gs.players.length; i++) {
+    if (isGorillaAirborne(gs, i)) {
+      gs.fallingIdx = i;
+      gs.fallStartY = gs.players[i].y;
+      gs.fallingVY  = 0;
+      return;
+    }
+  }
+
+  transition('LAND');
 }
 
 function processNextTurn() {
@@ -171,6 +210,7 @@ function tick(timestamp) {
   processAI(dt);
   processFlight(dt);
   processExploding(dt);
+  processFalling(dt);
   processNextTurn();
   processGameOver();
   render(ctx, gs);
