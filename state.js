@@ -5,6 +5,7 @@ export const STATE = {
   AIMING:     'AIMING',
   FLYING:     'FLYING',
   EXPLODING:  'EXPLODING',
+  FALLING:    'FALLING',
   NEXT_TURN:  'NEXT_TURN',
   GAME_OVER:  'GAME_OVER',
 };
@@ -23,6 +24,9 @@ export const gs = {
   explodeTimer: 0,
   aiThinkTimer: 0,
   winner:       -1,
+  fallingIdx:   -1,
+  fallStartY:   0,
+  fallingVY:    0,
 };
 
 export function initGame(player2IsAI = false) {
@@ -35,6 +39,9 @@ export function initGame(player2IsAI = false) {
   gs.players[1]   = { hp: GORILLA_HP, isAI: player2IsAI, name: player2IsAI ? 'KI' : 'Spieler 2', x: 0, y: 0, animState: 'idle' };
   gs.aim          = { angle: 45, power: 50 };
   gs.wind         = (Math.random() * 2 - 1) * WIND_MAX;
+  gs.fallingIdx   = -1;
+  gs.fallStartY   = 0;
+  gs.fallingVY    = 0;
 }
 
 export function transition(event) {
@@ -62,6 +69,20 @@ export function transition(event) {
 
     case STATE.EXPLODING:
       if (event === 'EXPLODE_DONE') {
+        if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
+          gs.winner = gs.players[0].hp > 0 ? 0 : 1;
+          gs.phase  = STATE.GAME_OVER;
+        } else {
+          gs.phase = STATE.NEXT_TURN;
+        }
+      }
+      if (event === 'FALL') {
+        gs.phase = STATE.FALLING;
+      }
+      break;
+
+    case STATE.FALLING:
+      if (event === 'LAND') {
         if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
           gs.winner = gs.players[0].hp > 0 ? 0 : 1;
           gs.phase  = STATE.GAME_OVER;
