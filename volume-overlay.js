@@ -48,5 +48,6 @@ export function initVolumeOverlay() {
 
 export function toggleVolumeOverlay() {
   const el = document.getElementById('volume-overlay');
+  if (!el) return;
   el.style.display = el.style.display === 'flex' ? 'none' : 'flex';
 }

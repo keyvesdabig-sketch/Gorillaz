@@ -258,8 +258,8 @@ canvas {
   gap: 16px;
   padding: 20px 24px;
   background: var(--glass);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 12px;
   z-index: 20;
