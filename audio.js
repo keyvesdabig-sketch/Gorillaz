@@ -9,6 +9,10 @@ export function initAudio() {
   audioCtx = new AudioContext();
   fxMaster  = audioCtx.createGain();
   fxMaster.connect(audioCtx.destination);
+  musicEl = new Audio('lofiewme-pixel-fantasia-355123.mp3');
+  musicEl.loop   = true;
+  musicEl.volume = 0.5;
+  musicEl.play().catch(() => {});
 }
 
 export function setFxVolume(v)      { if (fxMaster)  fxMaster.gain.value = v; }
