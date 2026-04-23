@@ -1,6 +1,7 @@
 import { CANVAS_W, CANVAS_H, COLORS, GORILLA_H } from './constants.js';
 import { buildTerrainImageData } from './terrain.js';
 import { drawGorilla } from './gorilla.js';
+import { STATE } from './state.js';
 
 export function render(ctx, gs) {
   drawSky(ctx);
