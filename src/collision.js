@@ -2,7 +2,7 @@ import { CANVAS_W, CANVAS_H, GORILLA_W, GORILLA_H } from './constants.js';
 import { getPixel, getHeight } from './terrain.js';
 
 export function checkOutOfBounds(banana) {
-  return banana.x < 0 || banana.x > CANVAS_W || banana.y > CANVAS_H;
+  return banana.x < 0 || banana.x > CANVAS_W || banana.y > CANVAS_H || banana.y < -CANVAS_H;
 }
 
 export function checkTerrain(banana) {

@@ -44,7 +44,7 @@ export function simulateTrajectory(x, y, angleDeg, power, wind) {
   const dt = 0.016;
   for (let i = 0; i < 5000; i++) {
     stepBanana(b, dt);
-    if (b.x < 0 || b.x >= CANVAS_W || b.y >= CANVAS_H) return null;
+    if (b.x < 0 || b.x >= CANVAS_W || b.y >= CANVAS_H || b.y < -CANVAS_H) return null;
     if (getPixel(b.x, b.y)) return { x: b.x, y: b.y };
   }
   return null;

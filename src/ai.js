@@ -1,9 +1,9 @@
 import { simulateTrajectory } from './physics.js';
-import { AI_INACCURACY } from './constants.js';
+import { AI_INACCURACY, GORILLA_H } from './constants.js';
 
 export function calculateAIShot(shooter, target, wind) {
   const dx = target.x - shooter.x;
-  const startY = shooter.y - 48;  // Wurfhöhe
+  const startY = shooter.y - GORILLA_H;  // Wurfhöhe
 
   for (let power = 20; power <= 100; power += 4) {
     // Groben Winkel schätzen: flach wenn nah, steiler wenn weit

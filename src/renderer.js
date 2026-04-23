@@ -1,7 +1,6 @@
 import { CANVAS_W, CANVAS_H, COLORS, GORILLA_H } from './constants.js';
 import { buildTerrainImageData } from './terrain.js';
 import { drawGorilla } from './gorilla.js';
-import { STATE } from './state.js';
 
 export function render(ctx, gs) {
   drawSky(ctx);
@@ -10,7 +9,6 @@ export function render(ctx, gs) {
   drawAimIndicator(ctx, gs);
   drawBanana(ctx, gs.banana);
   drawParticles(ctx, gs.particles);
-  drawGameOver(ctx, gs);
 }
 
 function drawSky(ctx) {
@@ -149,20 +147,3 @@ function drawParticles(ctx, particles) {
   }
 }
 
-function drawGameOver(ctx, gs) {
-  if (gs.phase !== STATE.GAME_OVER) return;
-
-  ctx.fillStyle = 'rgba(0,0,0,0.6)';
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-
-  ctx.fillStyle = COLORS.TEXT;
-  ctx.font      = 'bold 64px monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText(`${gs.players[gs.winner].name} gewinnt!`, CANVAS_W / 2, CANVAS_H / 2 - 40);
-
-  ctx.font      = '28px monospace';
-  ctx.fillStyle = COLORS.SURFACE;
-  ctx.fillText('Leertaste: Neues Spiel', CANVAS_W / 2, CANVAS_H / 2 + 30);
-
-  ctx.textAlign = 'left';
-}
