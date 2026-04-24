@@ -193,7 +193,7 @@ Layer-Reihenfolge pro Frame:
 
 **UI-Elemente:**
 - HP-Balken: P1 links, P2 rechts (Neon-Grün/Rot)
-- Wind-Pfeil: mittig oben, Länge proportional zur Windstärke
+- Wind-Indikator: mittig oben, Glasmorphism-Pill; Richtungsbalken wächst vom Zentrum zur aktiven Seite, Pfeilspitze am Ende, Chevrons (◀ ▶) leuchten auf der aktiven Seite, numerischer Wert unten (+12 / -8)
 - Winkel/Kraft: unten eingeblendet während AIMING
 
 ---

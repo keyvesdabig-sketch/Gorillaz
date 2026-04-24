@@ -28,10 +28,17 @@
       </div>
 
       <div class="wind-indicator">
-        <div class="wind-label">Wind Velocity</div>
-        <div class="wind-arrow-container">
-          <div class="wind-arrow-line" id="wind-line"></div>
+        <div class="wind-label">Wind</div>
+        <div class="wind-display">
+          <span class="wind-arrow-left" id="wind-arrow-left">◀</span>
+          <div class="wind-track">
+            <div class="wind-track-center"></div>
+            <div class="wind-bar" id="wind-line"></div>
+            <div class="wind-arrowhead" id="wind-arrowhead"></div>
+          </div>
+          <span class="wind-arrow-right" id="wind-arrow-right">▶</span>
         </div>
+        <div class="wind-value" id="wind-value">0</div>
       </div>
 
       <div class="hud-bottom">

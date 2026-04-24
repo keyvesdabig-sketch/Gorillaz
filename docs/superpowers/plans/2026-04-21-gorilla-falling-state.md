@@ -1,6 +1,6 @@
 # Gorilla Falling-State Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Gorillas fallen physikalisch nach unten wenn Terrain unter ihnen weggesprengt wird, mit moderatem Fallschaden und Unterstützung für Kettenfälle.
 
@@ -27,7 +27,7 @@
 **Files:**
 - Modify: `state.js`
 
-- [ ] **Schritt 1: `FALLING` zu STATE hinzufügen**
+- [x] **Schritt 1: `FALLING` zu STATE hinzufügen**
 
 In `state.js` Zeile 9 nach `GAME_OVER`:
 
@@ -43,7 +43,7 @@ export const STATE = {
 };
 ```
 
-- [ ] **Schritt 2: Neue `gs`-Felder hinzufügen**
+- [x] **Schritt 2: Neue `gs`-Felder hinzufügen**
 
 In `gs` (Zeile 12) drei neue Felder ergänzen:
 
@@ -68,7 +68,7 @@ export const gs = {
 };
 ```
 
-- [ ] **Schritt 3: `initGame` Reset ergänzen**
+- [x] **Schritt 3: `initGame` Reset ergänzen**
 
 In `initGame` (Zeile 28) nach `gs.winner = -1`:
 
@@ -78,7 +78,7 @@ gs.fallStartY   = 0;
 gs.fallingVY    = 0;
 ```
 
-- [ ] **Schritt 4: `FALL`-Event in EXPLODING-Case und neuen FALLING-Case hinzufügen**
+- [x] **Schritt 4: `FALL`-Event in EXPLODING-Case und neuen FALLING-Case hinzufügen**
 
 Den `transition`-Switch in `state.js` (Zeile 40) anpassen. Den EXPLODING-Case und danach den neuen FALLING-Case einfügen:
 
@@ -109,7 +109,7 @@ Den `transition`-Switch in `state.js` (Zeile 40) anpassen. Den EXPLODING-Case un
       break;
 ```
 
-- [ ] **Schritt 5: Committen**
+- [x] **Schritt 5: Committen**
 
 ```bash
 git add state.js
@@ -123,7 +123,7 @@ git commit -m "feat: add FALLING state, gs fields, and FALL/LAND transitions"
 **Files:**
 - Create: `test-falling.js`
 
-- [ ] **Schritt 1: Testdatei erstellen**
+- [x] **Schritt 1: Testdatei erstellen**
 
 ```js
 import { isGorillaAirborne } from './collision.js';
@@ -182,7 +182,7 @@ assert(r3.landed === false, 'Kein Lande-Signal wenn noch in der Luft');
 console.log('Falling-Tests fertig');
 ```
 
-- [ ] **Schritt 2: Tests im Browser ausführen (erwarte Fehler)**
+- [x] **Schritt 2: Tests im Browser ausführen (erwarte Fehler)**
 
 Dev-Server starten falls noch nicht läuft:
 ```bash
@@ -203,7 +203,7 @@ Erwartete Ausgabe: Import-Fehler weil `isGorillaAirborne` und `stepGorillaFall` 
 **Files:**
 - Modify: `collision.js`
 
-- [ ] **Schritt 1: Import erweitern**
+- [x] **Schritt 1: Import erweitern**
 
 Zeile 1 in `collision.js` ändern — `getHeight` hinzufügen:
 
@@ -212,7 +212,7 @@ import { CANVAS_W, CANVAS_H, GORILLA_W, GORILLA_H } from './constants.js';
 import { getPixel, getHeight } from './terrain.js';
 ```
 
-- [ ] **Schritt 2: `isGorillaAirborne` am Ende der Datei hinzufügen**
+- [x] **Schritt 2: `isGorillaAirborne` am Ende der Datei hinzufügen**
 
 ```js
 export function isGorillaAirborne(gs, idx) {
@@ -221,7 +221,7 @@ export function isGorillaAirborne(gs, idx) {
 }
 ```
 
-- [ ] **Schritt 3: Tests laufen lassen**
+- [x] **Schritt 3: Tests laufen lassen**
 
 Im Browser-Console:
 ```js
@@ -237,7 +237,7 @@ Erwartete Ausgabe: Die `isGorillaAirborne`-Tests zeigen `PASS:`, die `stepGorill
 **Files:**
 - Modify: `physics.js`
 
-- [ ] **Schritt 1: Import erweitern**
+- [x] **Schritt 1: Import erweitern**
 
 Zeile 1 in `physics.js` ändern — `getHeight` hinzufügen:
 
@@ -246,7 +246,7 @@ import { GRAVITY, CANVAS_W, CANVAS_H } from './constants.js';
 import { getPixel, getHeight } from './terrain.js';
 ```
 
-- [ ] **Schritt 2: `stepGorillaFall` am Ende der Datei hinzufügen**
+- [x] **Schritt 2: `stepGorillaFall` am Ende der Datei hinzufügen**
 
 ```js
 export function stepGorillaFall(gs, dt) {
@@ -262,7 +262,7 @@ export function stepGorillaFall(gs, dt) {
 }
 ```
 
-- [ ] **Schritt 3: Alle Tests laufen lassen**
+- [x] **Schritt 3: Alle Tests laufen lassen**
 
 Im Browser-Console:
 ```js
@@ -271,7 +271,7 @@ import('./test-falling.js')
 
 Erwartete Ausgabe: Alle Zeilen mit `PASS:`, abgeschlossen mit `Falling-Tests fertig`.
 
-- [ ] **Schritt 4: Committen**
+- [x] **Schritt 4: Committen**
 
 ```bash
 git add collision.js physics.js test-falling.js
@@ -285,7 +285,7 @@ git commit -m "feat: isGorillaAirborne and stepGorillaFall with tests"
 **Files:**
 - Modify: `main.js`
 
-- [ ] **Schritt 1: Neue Imports hinzufügen**
+- [x] **Schritt 1: Neue Imports hinzufügen**
 
 Zeile 6–7 in `main.js` anpassen:
 
@@ -299,7 +299,7 @@ Zeile 5 anpassen:
 import { createBanana, stepBanana, stepGorillaFall } from './physics.js';
 ```
 
-- [ ] **Schritt 2: `processExploding` anpassen**
+- [x] **Schritt 2: `processExploding` anpassen**
 
 Den bestehenden `processExploding`-Block (Zeile 120–133) ersetzen:
 
@@ -330,7 +330,7 @@ function processExploding(dt) {
 }
 ```
 
-- [ ] **Schritt 3: `processFalling` hinzufügen**
+- [x] **Schritt 3: `processFalling` hinzufügen**
 
 Nach `processExploding` und vor `processNextTurn` einfügen:
 
@@ -365,7 +365,7 @@ function processFalling(dt) {
 }
 ```
 
-- [ ] **Schritt 4: `processFalling` in den `tick`-Loop einbauen**
+- [x] **Schritt 4: `processFalling` in den `tick`-Loop einbauen**
 
 In der `tick`-Funktion (Zeile ~170) nach `processExploding(dt)`:
 
@@ -375,7 +375,7 @@ In der `tick`-Funktion (Zeile ~170) nach `processExploding(dt)`:
   processNextTurn();
 ```
 
-- [ ] **Schritt 5: Manuellen Smoke-Test durchführen**
+- [x] **Schritt 5: Manuellen Smoke-Test durchführen**
 
 Dev-Server öffnen: `http://localhost:3000`
 
@@ -386,7 +386,7 @@ Testszenario:
 4. Nächster Zug läuft normal weiter
 5. Kettenfall: Gorilla auf schmalem Vorsprung → erneute Explosion → zweimaliges Fallen
 
-- [ ] **Schritt 6: Committen**
+- [x] **Schritt 6: Committen**
 
 ```bash
 git add main.js

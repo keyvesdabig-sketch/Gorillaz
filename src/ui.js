@@ -31,12 +31,39 @@ function updateHPBars(gs) {
 }
 
 function updateWindIndicator(gs) {
-  const windLine = document.getElementById('wind-line');
-  if (windLine) {
-    const pct = (gs.wind / WIND_MAX) * 50; // -50% to 50%
-    windLine.style.width = `${Math.abs(pct)}%`;
-    windLine.style.left  = pct >= 0 ? '50%' : `${50 + pct}%`;
+  const windBar   = document.getElementById('wind-line');
+  const windHead  = document.getElementById('wind-arrowhead');
+  const windValue = document.getElementById('wind-value');
+  const arrowLeft = document.getElementById('wind-arrow-left');
+  const arrowRight = document.getElementById('wind-arrow-right');
+  if (!windBar) return;
+
+  const pct = gs.wind / WIND_MAX; // -1 to +1
+  const absPct = Math.abs(pct);
+  const goRight = gs.wind >= 0;
+
+  if (absPct < 0.02) {
+    windBar.style.width = '0';
+    if (windHead) { windHead.style.left = '50%'; windHead.classList.remove('right', 'left'); }
+    if (arrowLeft)  arrowLeft.classList.remove('active');
+    if (arrowRight) arrowRight.classList.remove('active');
+  } else if (goRight) {
+    windBar.style.left  = '50%';
+    windBar.style.width = `${absPct * 46}%`;
+    windBar.classList.remove('leftward');
+    if (windHead) { windHead.style.left = `calc(50% + ${absPct * 46}% - 1px)`; windHead.classList.remove('left'); windHead.classList.add('right'); }
+    if (arrowRight) arrowRight.classList.add('active');
+    if (arrowLeft)  arrowLeft.classList.remove('active');
+  } else {
+    windBar.style.left  = `${50 - absPct * 46}%`;
+    windBar.style.width = `${absPct * 46}%`;
+    windBar.classList.add('leftward');
+    if (windHead) { windHead.style.left = `calc(${50 - absPct * 46}% - 6px)`; windHead.classList.remove('right'); windHead.classList.add('left'); }
+    if (arrowLeft)  arrowLeft.classList.add('active');
+    if (arrowRight) arrowRight.classList.remove('active');
   }
+
+  if (windValue) windValue.textContent = `${gs.wind > 0 ? '+' : ''}${Math.round(gs.wind)}`;
 }
 
 function updateTurnAndAim(gs) {

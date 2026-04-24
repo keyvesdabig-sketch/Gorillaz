@@ -1,6 +1,6 @@
 # Volume Overlay — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Lautstärke-Overlay mit FX/Music/Ambient-Slidern (M-Taste toggle), Musik-MP3 startet beim ersten Tastendruck.
 
@@ -33,7 +33,7 @@ Alle FX-Sounds routen durch einen gemeinsamen GainNode. `setFxVolume(v)` setzt d
 - Modify: `audio.js`
 - Modify: `test-audio.js`
 
-- [ ] **Schritt 1: Test erweitern**
+- [x] **Schritt 1: Test erweitern**
 
 In `test-audio.js` den Import-Ausdruck ersetzen:
 
@@ -55,7 +55,7 @@ try { setFxVolume(0); } catch(e) { noThrow = false; }
 assert(noThrow, 'setFxVolume(0) wirft keinen Fehler');
 ```
 
-- [ ] **Schritt 2: Test im Browser ausführen (muss FAIL für setFxVolume)**
+- [x] **Schritt 2: Test im Browser ausführen (muss FAIL für setFxVolume)**
 
 ```
 import('./test-audio.js')
@@ -63,7 +63,7 @@ import('./test-audio.js')
 
 Erwartetes Ergebnis: `FAIL: setFxVolume ist exportiert`
 
-- [ ] **Schritt 3: audio.js anpassen**
+- [x] **Schritt 3: audio.js anpassen**
 
 `audio.js` vollständig ersetzen:
 
@@ -145,7 +145,7 @@ export function playDeath() {
 }
 ```
 
-- [ ] **Schritt 4: Test ausführen (alle PASS)**
+- [x] **Schritt 4: Test ausführen (alle PASS)**
 
 ```
 import('./test-audio.js')
@@ -153,7 +153,7 @@ import('./test-audio.js')
 
 Erwartetes Ergebnis: alle PASS inkl. `setFxVolume ist exportiert`.
 
-- [ ] **Schritt 5: Commit**
+- [x] **Schritt 5: Commit**
 
 ```bash
 git add audio.js test-audio.js
@@ -170,7 +170,7 @@ Musikdatei `lofiewme-pixel-fantasia-355123.mp3` wird beim ersten Tastendruck ges
 - Modify: `audio.js`
 - Modify: `test-audio.js`
 
-- [ ] **Schritt 1: Test erweitern**
+- [x] **Schritt 1: Test erweitern**
 
 In `test-audio.js` den Import-Ausdruck ersetzen:
 
@@ -188,7 +188,7 @@ try { setMusicVolume(0.3); } catch(e) { noThrow = false; }
 assert(noThrow, 'setMusicVolume(0.3) wirft keinen Fehler nach initAudio()');
 ```
 
-- [ ] **Schritt 2: Test im Browser ausführen (muss FAIL für setMusicVolume)**
+- [x] **Schritt 2: Test im Browser ausführen (muss FAIL für setMusicVolume)**
 
 ```
 import('./test-audio.js')
@@ -196,7 +196,7 @@ import('./test-audio.js')
 
 Erwartetes Ergebnis: `FAIL: setMusicVolume ist exportiert`
 
-- [ ] **Schritt 3: musicEl in `initAudio()` ergänzen**
+- [x] **Schritt 3: musicEl in `initAudio()` ergänzen**
 
 In `audio.js` die Funktion `initAudio()` ersetzen:
 
@@ -213,17 +213,17 @@ export function initAudio() {
 }
 ```
 
-- [ ] **Schritt 4: Test ausführen (alle PASS)**
+- [x] **Schritt 4: Test ausführen (alle PASS)**
 
 ```
 import('./test-audio.js')
 ```
 
-- [ ] **Schritt 5: Manuell verifizieren**
+- [x] **Schritt 5: Manuell verifizieren**
 
 Spiel im Browser öffnen, erste Taste drücken → Musik muss starten.
 
-- [ ] **Schritt 6: Commit**
+- [x] **Schritt 6: Commit**
 
 ```bash
 git add audio.js test-audio.js
@@ -240,7 +240,7 @@ Ambient-Kanal vorbereiten (kein src, bleibt stumm bis Datei gesetzt wird).
 - Modify: `audio.js`
 - Modify: `test-audio.js`
 
-- [ ] **Schritt 1: Test erweitern**
+- [x] **Schritt 1: Test erweitern**
 
 In `test-audio.js` den Import-Ausdruck ersetzen:
 
@@ -258,13 +258,13 @@ try { setAmbientVolume(0.2); } catch(e) { noThrow = false; }
 assert(noThrow, 'setAmbientVolume(0.2) wirft keinen Fehler');
 ```
 
-- [ ] **Schritt 2: Test im Browser ausführen (muss FAIL für setAmbientVolume)**
+- [x] **Schritt 2: Test im Browser ausführen (muss FAIL für setAmbientVolume)**
 
 ```
 import('./test-audio.js')
 ```
 
-- [ ] **Schritt 3: ambientEl in `initAudio()` ergänzen**
+- [x] **Schritt 3: ambientEl in `initAudio()` ergänzen**
 
 In `audio.js` die Funktion `initAudio()` ersetzen:
 
@@ -284,13 +284,13 @@ export function initAudio() {
 }
 ```
 
-- [ ] **Schritt 4: Test ausführen (alle PASS)**
+- [x] **Schritt 4: Test ausführen (alle PASS)**
 
 ```
 import('./test-audio.js')
 ```
 
-- [ ] **Schritt 5: Commit**
+- [x] **Schritt 5: Commit**
 
 ```bash
 git add audio.js test-audio.js
@@ -307,7 +307,7 @@ DOM-Overlay mit drei Slidern, idempotente Initialisierung.
 - Create: `volume-overlay.js`
 - Create: `test-volume-overlay.js`
 
-- [ ] **Schritt 1: Test schreiben**
+- [x] **Schritt 1: Test schreiben**
 
 Neue Datei `test-volume-overlay.js`:
 
@@ -346,7 +346,7 @@ assert(document.querySelectorAll('#volume-overlay').length === 1, 'initVolumeOve
 console.log('VolumeOverlay-Tests fertig');
 ```
 
-- [ ] **Schritt 2: Test im Browser ausführen (muss FAIL)**
+- [x] **Schritt 2: Test im Browser ausführen (muss FAIL)**
 
 ```
 import('./test-volume-overlay.js')
@@ -354,7 +354,7 @@ import('./test-volume-overlay.js')
 
 Erwartetes Ergebnis: Fehler wegen fehlender Datei.
 
-- [ ] **Schritt 3: `volume-overlay.js` erstellen**
+- [x] **Schritt 3: `volume-overlay.js` erstellen**
 
 ```js
 import { setFxVolume, setMusicVolume, setAmbientVolume } from './audio.js';
@@ -411,7 +411,7 @@ export function toggleVolumeOverlay() {
 }
 ```
 
-- [ ] **Schritt 4: Test ausführen (alle PASS)**
+- [x] **Schritt 4: Test ausführen (alle PASS)**
 
 ```
 import('./test-volume-overlay.js')
@@ -419,7 +419,7 @@ import('./test-volume-overlay.js')
 
 Erwartetes Ergebnis: alle PASS + `VolumeOverlay-Tests fertig`.
 
-- [ ] **Schritt 5: Commit**
+- [x] **Schritt 5: Commit**
 
 ```bash
 git add volume-overlay.js test-volume-overlay.js
@@ -433,7 +433,7 @@ git commit -m "feat: add volume-overlay.js with initVolumeOverlay and toggleVolu
 **Files:**
 - Modify: `style.css`
 
-- [ ] **Schritt 1: Styles an das Ende von `style.css` anhängen**
+- [x] **Schritt 1: Styles an das Ende von `style.css` anhängen**
 
 ```css
 #volume-overlay {
@@ -497,7 +497,7 @@ git commit -m "feat: add volume-overlay.js with initVolumeOverlay and toggleVolu
 }
 ```
 
-- [ ] **Schritt 2: Visuell verifizieren**
+- [x] **Schritt 2: Visuell verifizieren**
 
 Im Browser-Console:
 
@@ -509,7 +509,7 @@ toggleVolumeOverlay();
 
 Erwartetes Ergebnis: Glasmorphism-Panel unten rechts, Neon-Cyan-Akzente, drei Slider sichtbar.
 
-- [ ] **Schritt 3: Commit**
+- [x] **Schritt 3: Commit**
 
 ```bash
 git add style.css
@@ -523,7 +523,7 @@ git commit -m "feat: add #volume-overlay styles (glassmorphism, neon-night palet
 **Files:**
 - Modify: `main.js`
 
-- [ ] **Schritt 1: Import ergänzen**
+- [x] **Schritt 1: Import ergänzen**
 
 In `main.js` nach dem `audio.js`-Import (Zeile 10) einfügen:
 
@@ -531,7 +531,7 @@ In `main.js` nach dem `audio.js`-Import (Zeile 10) einfügen:
 import { initVolumeOverlay, toggleVolumeOverlay } from './volume-overlay.js';
 ```
 
-- [ ] **Schritt 2: `initVolumeOverlay()` aufrufen**
+- [x] **Schritt 2: `initVolumeOverlay()` aufrufen**
 
 In `main.js` nach `initGame(true);` einfügen:
 
@@ -539,7 +539,7 @@ In `main.js` nach `initGame(true);` einfügen:
 initVolumeOverlay();
 ```
 
-- [ ] **Schritt 3: M-Taste im keydown-Handler verdrahten**
+- [x] **Schritt 3: M-Taste im keydown-Handler verdrahten**
 
 Den bestehenden keydown-Handler ersetzen:
 
@@ -552,18 +552,18 @@ window.addEventListener('keydown', e => {
 });
 ```
 
-- [ ] **Schritt 4: Vollständig im Browser testen**
+- [x] **Schritt 4: Vollständig im Browser testen**
 
 Checkliste:
-- [ ] `M` öffnet Overlay (unten rechts, glassmorphism)
-- [ ] `M` nochmal schließt Overlay
-- [ ] FX-Slider: auf 0 schieben → Schuss und Explosion stumm
-- [ ] FX-Slider: auf 100 → Sounds wieder hörbar
-- [ ] Music-Slider: Musik lauter/leiser
-- [ ] Ambient-Slider: bewegt sich, kein Fehler in Console
-- [ ] Keine Fehler in der Browser-Console
+- [x] `M` öffnet Overlay (unten rechts, glassmorphism)
+- [x] `M` nochmal schließt Overlay
+- [x] FX-Slider: auf 0 schieben → Schuss und Explosion stumm
+- [x] FX-Slider: auf 100 → Sounds wieder hörbar
+- [x] Music-Slider: Musik lauter/leiser
+- [x] Ambient-Slider: bewegt sich, kein Fehler in Console
+- [x] Keine Fehler in der Browser-Console
 
-- [ ] **Schritt 5: Commit**
+- [x] **Schritt 5: Commit**
 
 ```bash
 git add main.js
