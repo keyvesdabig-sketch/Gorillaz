@@ -97,7 +97,11 @@ function updateGameOver(gs) {
   
   if (gs.phase === STATE.GAME_OVER) {
     if (overlay) overlay.classList.add('visible');
-    if (winner)  winner.textContent = `${gs.players[gs.winner].name} gewinnt!`;
+    if (winner) {
+      winner.textContent = gs.winner === -1
+        ? 'Unentschieden!'
+        : `${gs.players[gs.winner].name} gewinnt!`;
+    }
   } else {
     if (overlay) overlay.classList.remove('visible');
   }

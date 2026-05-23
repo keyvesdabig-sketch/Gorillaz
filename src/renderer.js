@@ -24,9 +24,18 @@ function drawSky(ctx) {
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }
 
+let _terrainCanvas = null;
 function drawTerrain(ctx) {
   const img = buildTerrainImageData(ctx);
-  if (img) ctx.putImageData(img, 0, 0);
+  if (!img) return;
+  if (!_terrainCanvas) {
+    _terrainCanvas = document.createElement('canvas');
+    _terrainCanvas.width = CANVAS_W;
+    _terrainCanvas.height = CANVAS_H;
+  }
+  const offCtx = _terrainCanvas.getContext('2d');
+  offCtx.putImageData(img, 0, 0);
+  ctx.drawImage(_terrainCanvas, 0, 0);
 }
 
 function drawGorillas(ctx, gs) {

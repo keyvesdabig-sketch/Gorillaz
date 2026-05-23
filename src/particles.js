@@ -1,4 +1,4 @@
-import { COLORS } from './constants.js';
+import { COLORS, GRAVITY } from './constants.js';
 
 export function createExplosionParticles(cx, cy) {
   const particles = [];
@@ -22,7 +22,7 @@ export function stepParticles(particles, dt) {
   for (const p of particles) {
     p.x    += p.vx * dt;
     p.y    += p.vy * dt;
-    p.vy   += 300 * dt;
+    p.vy   += GRAVITY * dt;
     p.life -= dt / 1.5;
   }
   return particles.filter(p => p.life > 0);
