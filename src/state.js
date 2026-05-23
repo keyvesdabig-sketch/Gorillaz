@@ -70,7 +70,11 @@ export function transition(event) {
     case STATE.EXPLODING:
       if (event === 'EXPLODE_DONE') {
         if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
-          gs.winner = gs.players[0].hp > 0 ? 0 : 1;
+          if (gs.players[0].hp <= 0 && gs.players[1].hp <= 0) {
+            gs.winner = -1;
+          } else {
+            gs.winner = gs.players[0].hp > 0 ? 0 : 1;
+          }
           gs.phase  = STATE.GAME_OVER;
         } else {
           gs.phase = STATE.NEXT_TURN;
@@ -86,7 +90,11 @@ export function transition(event) {
         gs.fallingIdx = -1;
         gs.fallingVY  = 0;
         if (gs.players[0].hp <= 0 || gs.players[1].hp <= 0) {
-          gs.winner = gs.players[0].hp > 0 ? 0 : 1;
+          if (gs.players[0].hp <= 0 && gs.players[1].hp <= 0) {
+            gs.winner = -1;
+          } else {
+            gs.winner = gs.players[0].hp > 0 ? 0 : 1;
+          }
           gs.phase  = STATE.GAME_OVER;
         } else {
           gs.phase = STATE.NEXT_TURN;

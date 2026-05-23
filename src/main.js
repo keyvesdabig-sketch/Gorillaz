@@ -16,11 +16,12 @@ canvas.width  = CANVAS_W;
 canvas.height = CANVAS_H;
 
 const keys = {};
+const GAME_KEYS = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'];
 window.addEventListener('keydown', e => {
   initAudio();
   if (e.code === 'KeyM') toggleVolumeOverlay();
   keys[e.code] = true;
-  e.preventDefault();
+  if (GAME_KEYS.includes(e.code)) e.preventDefault();
 });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
@@ -30,7 +31,7 @@ const POWER_SPEED = 40;
 initGame(true); // true = P2 ist KI
 initVolumeOverlay();
 
-let lastTime = 0;
+let lastTime = -1;
 
 function processAimingInput(dt) {
   if (gs.phase !== STATE.AIMING) return;
@@ -118,7 +119,7 @@ function processFlight(dt) {
     transition('HIT_TERRAIN');
     return;
   }
-  const hitIdx = checkGorilla(gs.banana, gs.players);
+  const hitIdx = checkGorilla(gs.banana, gs.players, gs.turn);
   if (hitIdx !== -1) {
     triggerExplosion(gs.banana.x, gs.banana.y, hitIdx);  // Direkttreffer: -30 HP via triggerExplosion
     transition('HIT_GORILLA');
@@ -201,6 +202,11 @@ function processGameOver() {
 }
 
 function tick(timestamp) {
+  if (lastTime < 0) {
+    lastTime = timestamp;
+    requestAnimationFrame(tick);
+    return;
+  }
   const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
   lastTime = timestamp;
 

@@ -7,6 +7,7 @@ const DEATH_FREQS = [523.25, 493.88, 466.16, 440, 415.30, 392];
 export function initAudio() {
   if (audioCtx) return;
   audioCtx = new AudioContext();
+  audioCtx.resume();
   fxMaster  = audioCtx.createGain();
   fxMaster.connect(audioCtx.destination);
   musicEl = new Audio('assets/lofiewme-pixel-fantasia-355123.mp3');
